@@ -2,22 +2,16 @@
 import { SignIn } from '@clerk/nextjs'
 import { useUser } from '@clerk/nextjs'
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
-  const { isLoaded, user } = useUser()
+  const { isLoaded } = useUser()
   const [showPlaceholder, setShowPlaceholder] = useState(true)
-  const router = useRouter()
   
   useEffect(() => {
     if (isLoaded) {
       setShowPlaceholder(false)
-      // If user is already signed in, redirect to dashboard
-      if (user) {
-        router.push('/dashboard')
-      }
     }
-  }, [isLoaded, user, router])
+  }, [isLoaded])
   
   return (
     <div className="min-h-screen flex">
@@ -44,7 +38,7 @@ export default function LoginPage() {
       <div className="w-1/2 flex items-center justify-center p-12 bg-white">
         <div className="w-full max-w-sm">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-3">Partner Login</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">Coach Login</h2>
             <p className="text-gray-600 text-lg">Enter your provided credentials</p>
           </div>
           
