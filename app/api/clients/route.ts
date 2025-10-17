@@ -9,6 +9,7 @@ export async function GET() {
   try {
     const client = await pool.connect();
     
+    
     // Get all coaches with their clients
     const result = await client.query(`
       WITH client_data AS (

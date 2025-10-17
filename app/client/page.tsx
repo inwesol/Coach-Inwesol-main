@@ -123,6 +123,7 @@ export default function ClientPage() {
                 </div>
               </div>
 
+
               {/* Clients Grid */}
               <div className="p-6">
                 {coach.clients.length > 0 ? (
