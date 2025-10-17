@@ -28,6 +28,11 @@ const data = {
       icon: Frame,
     },
     {
+      name: "Client",
+      url: "/client",
+      icon: Frame,
+    },
+    {
       name: "Mapped",
       url: "/mapped",
       icon: Frame,
