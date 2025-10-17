@@ -9,8 +9,7 @@ export async function GET() {
   try {
     const client = await pool.connect();
     
-    
-    // Get all coaches with their clients
+    // Get all coaches with their clients and session progress
     const result = await client.query(`
       WITH client_data AS (
         SELECT 
@@ -22,6 +21,15 @@ export async function GET() {
         FROM 
           coaches c,
           unnest(string_to_array(c.clients, ',')) as client_uuid
+      ),
+      max_sessions AS (
+        SELECT 
+          user_id,
+          MAX(session_id) as max_session_id
+        FROM 
+          user_session_form_progress
+        GROUP BY 
+          user_id
       )
       SELECT 
         cd.coach_id,
@@ -34,17 +42,20 @@ export async function GET() {
         u.image as user_image,
         u.email_verified as user_email_verified,
         u.created_at as user_created_at,
-        u.updated_at as user_updated_at
+        u.updated_at as user_updated_at,
+        ms.max_session_id as session_id
       FROM 
         client_data cd
       LEFT JOIN 
         "User" u ON u.id::text = cd.client_uuid
+      LEFT JOIN
+        max_sessions ms ON ms.user_id = u.id
       ORDER BY 
         cd.coach_name, u.name
     `);
-
+    
     await client.release();
-
+    
     // Group clients by coach
     const coachesMap = new Map();
     
@@ -67,16 +78,16 @@ export async function GET() {
           image: row.user_image,
           email_verified: row.user_email_verified,
           created_at: row.user_created_at,
-          updated_at: row.user_updated_at
+          updated_at: row.user_updated_at,
+          session_id: row.session_id
         });
       }
     });
-
+    
     return NextResponse.json({ 
       success: true, 
       data: Array.from(coachesMap.values()) 
     });
-
   } catch (error) {
     console.error('Error fetching clients:', error);
     return NextResponse.json(
