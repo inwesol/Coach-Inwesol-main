@@ -7,6 +7,17 @@ import { Badge } from '@/components/ui/badge'
 import { ArrowLeft, Calendar, CheckCircle, Clock, XCircle } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import DemographicsDetailsDialog from '@/components/DemographicsDetailsDialog'
+import PreAssessmentDetailsDialog from '@/components/PreAssessmentDetailsDialog'
+import PostCoachingDetailsDialog from '@/components/PostCoachingDetailsDialog'
+import CareerMaturityDetailsDialog from '@/components/CareerMaturityDetailsDialog'
+import PostCareerMaturityDetailsDialog from '@/components/PostCareerMaturityDetailsDialog'
+import PsychologicalWellbeingDetailsDialog from '@/components/PsychologicalWellbeingDetailsDialog'
+import PostPsychologicalWellbeingDetailsDialog from '@/components/PostPsychologicalWellbeingDetailsDialog'
+import PreCoachingStrengthDifficultyDetailsDialog from '@/components/PreCoachingStrengthDifficultyDetailsDialog'
+import PostCoachingStrengthDifficultyDetailsDialog from '@/components/PostCoachingStrengthDifficultyDetailsDialog'
+import RiasecTestDetailsDialog from '@/components/RiasecTestDetailsDialog'
+import PersonalityTestDetailsDialog from '@/components/PersonalityTestDetailsDialog'
 
 interface Client {
   id: string
@@ -34,6 +45,35 @@ const ClientSessionsPage = () => {
   const [sessions, setSessions] = useState<Session[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  // Dialog state
+  const [demographicsDialogOpen, setDemographicsDialogOpen] = useState(false)
+  const [preAssessmentDialogOpen, setPreAssessmentDialogOpen] = useState(false)
+  const [postCoachingDialogOpen, setPostCoachingDialogOpen] = useState(false)
+  const [careerMaturityDialogOpen, setCareerMaturityDialogOpen] =
+    useState(false)
+  const [postCareerMaturityDialogOpen, setPostCareerMaturityDialogOpen] =
+    useState(false)
+  const [
+    psychologicalWellbeingDialogOpen,
+    setPsychologicalWellbeingDialogOpen
+  ] = useState(false)
+  const [
+    postPsychologicalWellbeingDialogOpen,
+    setPostPsychologicalWellbeingDialogOpen
+  ] = useState(false)
+  const [
+    preCoachingStrengthDifficultyDialogOpen,
+    setPreCoachingStrengthDifficultyDialogOpen
+  ] = useState(false)
+  const [
+    postCoachingStrengthDifficultyDialogOpen,
+    setPostCoachingStrengthDifficultyDialogOpen
+  ] = useState(false)
+  const [riasecTestDialogOpen, setRiasecTestDialogOpen] = useState(false)
+  const [personalityTestDialogOpen, setPersonalityTestDialogOpen] =
+    useState(false)
+  const [selectedSession, setSelectedSession] = useState<Session | null>(null)
 
   useEffect(() => {
     const fetchClientSessions = async () => {
@@ -115,6 +155,36 @@ const ClientSessionsPage = () => {
           </Badge>
         )
     }
+  }
+
+  const handleSessionClick = (session: Session) => {
+    setSelectedSession(session)
+
+    // Open appropriate dialog based on formId
+    if (session.formId === 'demographics-details') {
+      setDemographicsDialogOpen(true)
+    } else if (session.formId === 'pre-assessment') {
+      setPreAssessmentDialogOpen(true)
+    } else if (session.formId === 'post-coaching') {
+      setPostCoachingDialogOpen(true)
+    } else if (session.formId === 'career-maturity') {
+      setCareerMaturityDialogOpen(true)
+    } else if (session.formId === 'post-career-maturity') {
+      setPostCareerMaturityDialogOpen(true)
+    } else if (session.formId === 'psychological-wellbeing') {
+      setPsychologicalWellbeingDialogOpen(true)
+    } else if (session.formId === 'post-psychological-wellbeing') {
+      setPostPsychologicalWellbeingDialogOpen(true)
+    } else if (session.formId === 'pre-coaching-strength-difficulty') {
+      setPreCoachingStrengthDifficultyDialogOpen(true)
+    } else if (session.formId === 'post-coaching-strength-difficulty') {
+      setPostCoachingStrengthDifficultyDialogOpen(true)
+    } else if (session.formId === 'riasec-test') {
+      setRiasecTestDialogOpen(true)
+    } else if (session.formId === 'personality-test') {
+      setPersonalityTestDialogOpen(true)
+    }
+    // Add other form types here in the future
   }
 
   // Group sessions by session_id
@@ -244,7 +314,8 @@ const ClientSessionsPage = () => {
                   {sessionGroup.sessions.map(session => (
                     <Card
                       key={session.id}
-                      className='border-l-4 border-l-blue-200 transition-shadow hover:shadow-md'
+                      className='cursor-pointer border-l-4 border-l-blue-200 transition-shadow hover:shadow-md'
+                      onClick={() => handleSessionClick(session)}
                     >
                       <CardHeader className='pb-3'>
                         <div className='flex items-center justify-between'>
@@ -289,6 +360,94 @@ const ClientSessionsPage = () => {
           </div>
         )}
       </div>
+
+      {/* Demographics Details Dialog */}
+      <DemographicsDetailsDialog
+        open={demographicsDialogOpen}
+        onOpenChange={setDemographicsDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+
+      {/* Pre-Assessment Details Dialog */}
+      <PreAssessmentDetailsDialog
+        open={preAssessmentDialogOpen}
+        onOpenChange={setPreAssessmentDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+
+      {/* Post-Coaching Details Dialog */}
+      <PostCoachingDetailsDialog
+        open={postCoachingDialogOpen}
+        onOpenChange={setPostCoachingDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+
+      {/* Career Maturity Details Dialog */}
+      <CareerMaturityDetailsDialog
+        open={careerMaturityDialogOpen}
+        onOpenChange={setCareerMaturityDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+
+      {/* Post-Career Maturity Details Dialog */}
+      <PostCareerMaturityDetailsDialog
+        open={postCareerMaturityDialogOpen}
+        onOpenChange={setPostCareerMaturityDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+
+      {/* Psychological Wellbeing Details Dialog */}
+      <PsychologicalWellbeingDetailsDialog
+        open={psychologicalWellbeingDialogOpen}
+        onOpenChange={setPsychologicalWellbeingDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+
+      {/* Post-Psychological Wellbeing Details Dialog */}
+      <PostPsychologicalWellbeingDetailsDialog
+        open={postPsychologicalWellbeingDialogOpen}
+        onOpenChange={setPostPsychologicalWellbeingDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+
+      {/* Pre-Coaching Strength Difficulty Details Dialog */}
+      <PreCoachingStrengthDifficultyDetailsDialog
+        open={preCoachingStrengthDifficultyDialogOpen}
+        onOpenChange={setPreCoachingStrengthDifficultyDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+
+      {/* Post-Coaching Strength Difficulty Details Dialog */}
+      <PostCoachingStrengthDifficultyDetailsDialog
+        open={postCoachingStrengthDifficultyDialogOpen}
+        onOpenChange={setPostCoachingStrengthDifficultyDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+
+      {/* RIASEC Test Details Dialog */}
+      <RiasecTestDetailsDialog
+        open={riasecTestDialogOpen}
+        onOpenChange={setRiasecTestDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+
+      {/* Personality Test Details Dialog */}
+      <PersonalityTestDetailsDialog
+        open={personalityTestDialogOpen}
+        onOpenChange={setPersonalityTestDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
     </div>
   )
 }
