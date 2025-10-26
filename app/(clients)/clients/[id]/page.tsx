@@ -18,6 +18,16 @@ import PreCoachingStrengthDifficultyDetailsDialog from '@/components/PreCoaching
 import PostCoachingStrengthDifficultyDetailsDialog from '@/components/PostCoachingStrengthDifficultyDetailsDialog'
 import RiasecTestDetailsDialog from '@/components/RiasecTestDetailsDialog'
 import PersonalityTestDetailsDialog from '@/components/PersonalityTestDetailsDialog'
+import CareerStoryOneDetailsDialog from '@/components/CareerStoryOneDetailsDialog'
+import CareerStoryTwoDetailsDialog from '@/components/CareerStoryTwoDetailsDialog'
+import CareerStoryThreeDetailsDialog from '@/components/CareerStoryThreeDetailsDialog'
+import CareerStoryFourDetailsDialog from '@/components/CareerStoryFourDetailsDialog'
+import LetterFromFutureSelfDetailsDialog from '@/components/LetterFromFutureSelfDetailsDialog'
+import MyLifeCollageDetailsDialog from '@/components/MyLifeCollageDetailsDialog'
+import CareerStoryFiveDetailsDialog from '@/components/CareerStoryFiveDetailsDialog'
+import CareerStorySixDetailsDialog from '@/components/CareerStorySixDetailsDialog'
+import SessionReportDetailsDialog from '@/components/SessionReportDetailsDialog'
+import ScheduleCallDetailsDialog from '@/components/ScheduleCallDetailsDialog'
 
 interface Client {
   id: string
@@ -40,14 +50,13 @@ interface Session {
 const ClientSessionsPage = () => {
   const params = useParams()
   const clientId = params.id as string
-
   const [client, setClient] = useState<Client | null>(null)
+
   const [sessions, setSessions] = useState<Session[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-
-  // Dialog state
   const [demographicsDialogOpen, setDemographicsDialogOpen] = useState(false)
+
   const [preAssessmentDialogOpen, setPreAssessmentDialogOpen] = useState(false)
   const [postCoachingDialogOpen, setPostCoachingDialogOpen] = useState(false)
   const [careerMaturityDialogOpen, setCareerMaturityDialogOpen] =
@@ -73,6 +82,23 @@ const ClientSessionsPage = () => {
   const [riasecTestDialogOpen, setRiasecTestDialogOpen] = useState(false)
   const [personalityTestDialogOpen, setPersonalityTestDialogOpen] =
     useState(false)
+  const [careerStoryOneDialogOpen, setCareerStoryOneDialogOpen] =
+    useState(false)
+  const [careerStoryTwoDialogOpen, setCareerStoryTwoDialogOpen] =
+    useState(false)
+  const [careerStoryThreeDialogOpen, setCareerStoryThreeDialogOpen] =
+    useState(false)
+  const [careerStoryFourDialogOpen, setCareerStoryFourDialogOpen] =
+    useState(false)
+  const [letterFromFutureSelfDialogOpen, setLetterFromFutureSelfDialogOpen] =
+    useState(false)
+  const [myLifeCollageDialogOpen, setMyLifeCollageDialogOpen] = useState(false)
+  const [careerStoryFiveDialogOpen, setCareerStoryFiveDialogOpen] =
+    useState(false)
+  const [careerStorySixDialogOpen, setCareerStorySixDialogOpen] =
+    useState(false)
+  const [sessionReportDialogOpen, setSessionReportDialogOpen] = useState(false)
+  const [scheduleCallDialogOpen, setScheduleCallDialogOpen] = useState(false)
   const [selectedSession, setSelectedSession] = useState<Session | null>(null)
 
   useEffect(() => {
@@ -183,12 +209,37 @@ const ClientSessionsPage = () => {
       setRiasecTestDialogOpen(true)
     } else if (session.formId === 'personality-test') {
       setPersonalityTestDialogOpen(true)
+    } else if (session.formId === 'career-story-1') {
+      setCareerStoryOneDialogOpen(true)
+    } else if (session.formId === 'career-story-2') {
+      setCareerStoryTwoDialogOpen(true)
+    } else if (session.formId === 'career-story-3') {
+      setCareerStoryThreeDialogOpen(true)
+    } else if (session.formId === 'career-story-4') {
+      setCareerStoryFourDialogOpen(true)
+    } else if (session.formId === 'letter-from-future-self') {
+      setLetterFromFutureSelfDialogOpen(true)
+    } else if (session.formId === 'my-life-collage') {
+      setMyLifeCollageDialogOpen(true)
+    } else if (session.formId === 'career-story-5') {
+      setCareerStoryFiveDialogOpen(true)
+    } else if (session.formId === 'career-story-6') {
+      setCareerStorySixDialogOpen(true)
+    } else if (session.formId === 'session-report') {
+      setSessionReportDialogOpen(true)
+    } else if (session.formId === 'schedule-call') {
+      setScheduleCallDialogOpen(true)
     }
     // Add other form types here in the future
   }
 
+  // Filter out sessions with formId containing 'feedback'
+  const filteredSessions = sessions.filter(
+    session => !session.formId.toLowerCase().includes('feedback')
+  )
+
   // Group sessions by session_id
-  const groupedSessions = sessions.reduce(
+  const groupedSessions = filteredSessions.reduce(
     (acc, session) => {
       const sessionKey = `session_${session.sessionId}`
       if (!acc[sessionKey]) {
@@ -289,7 +340,7 @@ const ClientSessionsPage = () => {
       {/* Sessions Cards */}
       <div className='mb-6'>
         <h2 className='mb-6 text-2xl font-semibold'>Sessions</h2>
-        {sessions.length === 0 ? (
+        {filteredSessions.length === 0 ? (
           <div className='flex h-32 items-center justify-center'>
             <div className='text-center text-muted-foreground'>
               <Calendar className='mx-auto mb-2 h-8 w-8' />
@@ -447,6 +498,90 @@ const ClientSessionsPage = () => {
         onOpenChange={setPersonalityTestDialogOpen}
         clientId={clientId}
         sessionId={selectedSession?.sessionId || 0}
+      />
+
+      {/* Career Story One Details Dialog */}
+      <CareerStoryOneDetailsDialog
+        open={careerStoryOneDialogOpen}
+        onOpenChange={setCareerStoryOneDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+
+      {/* Career Story Two Details Dialog */}
+      <CareerStoryTwoDetailsDialog
+        open={careerStoryTwoDialogOpen}
+        onOpenChange={setCareerStoryTwoDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+
+      {/* Career Story Three Details Dialog */}
+      <CareerStoryThreeDetailsDialog
+        open={careerStoryThreeDialogOpen}
+        onOpenChange={setCareerStoryThreeDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+      {/* Career Story Four Details Dialog */}
+      <CareerStoryFourDetailsDialog
+        open={careerStoryFourDialogOpen}
+        onOpenChange={setCareerStoryFourDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+      {/* Letter From Future Self Details Dialog */}
+      <LetterFromFutureSelfDetailsDialog
+        open={letterFromFutureSelfDialogOpen}
+        onOpenChange={setLetterFromFutureSelfDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+      {/* My Life Collage Details Dialog */}
+      <MyLifeCollageDetailsDialog
+        open={myLifeCollageDialogOpen}
+        onOpenChange={setMyLifeCollageDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+      {/* Career Story Five Details Dialog */}
+      <CareerStoryFiveDetailsDialog
+        open={careerStoryFiveDialogOpen}
+        onOpenChange={setCareerStoryFiveDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+      {/* Career Story Six Details Dialog */}
+      <CareerStorySixDetailsDialog
+        open={careerStorySixDialogOpen}
+        onOpenChange={setCareerStorySixDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+      {/* Session Report Details Dialog */}
+      <SessionReportDetailsDialog
+        open={sessionReportDialogOpen}
+        onOpenChange={setSessionReportDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+      />
+
+      {/* Schedule Call Details Dialog */}
+      <ScheduleCallDetailsDialog
+        open={scheduleCallDialogOpen}
+        onOpenChange={setScheduleCallDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
+        onPublishSuccess={() => {
+          // Refresh the sessions list after publish
+          fetch(`/api/clients/${clientId}/sessions`)
+            .then(res => res.json())
+            .then(data => {
+              if (data.success) {
+                setSessions(data.data.sessions)
+              }
+            })
+        }}
       />
     </div>
   )
