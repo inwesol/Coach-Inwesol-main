@@ -15,7 +15,7 @@ export default clerkMiddleware(async (auth, req) => {
   
   // If user is signed in and trying to access sign-in page, redirect to dashboard
   if (userId && req.nextUrl.pathname.includes('/sign-in')) {
-    return Response.redirect(new URL('/dashboard', req.url))
+    return Response.redirect(new URL('/clients', req.url))
   }
   
   // Protect all routes except public ones
