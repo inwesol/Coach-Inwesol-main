@@ -29,12 +29,25 @@ const EnableByCoachActions = ({
   const { user: clerkUser } = useUser()
 
   const handleToggle = async (key: string, checked: boolean) => {
-    if (!clerkUser?.emailAddresses?.[0]?.emailAddress) return
+    if (!clerkUser) return
+
+    // Check if emailAddresses exists and has at least one email
+    const emailAddresses = clerkUser.emailAddresses
+    if (
+      !emailAddresses ||
+      !Array.isArray(emailAddresses) ||
+      emailAddresses.length === 0
+    ) {
+      return
+    }
+
+    const coachEmail = emailAddresses[0]?.emailAddress
+    if (!coachEmail) return
 
     setLoadingKeys(prev => new Set(prev).add(key))
     try {
       const response = await fetch(
-        `/api/clients/${user.id}/enable-coach?coachEmail=${encodeURIComponent(clerkUser.emailAddresses[0].emailAddress)}`,
+        `/api/clients/${user.id}/enable-coach?coachEmail=${encodeURIComponent(coachEmail)}`,
         {
           method: 'PATCH',
           headers: {

@@ -33,15 +33,29 @@ const ClientsPage = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      if (!isLoaded || !user?.emailAddresses?.[0]?.emailAddress) {
+      // Wait for user to be loaded
+      if (!isLoaded || !user) {
+        return
+      }
+
+      // Check if emailAddresses exists and has at least one email
+      const emailAddresses = user.emailAddresses
+      if (
+        !emailAddresses ||
+        !Array.isArray(emailAddresses) ||
+        emailAddresses.length === 0
+      ) {
+        return
+      }
+
+      const coachEmail = emailAddresses[0]?.emailAddress
+      if (!coachEmail) {
         return
       }
 
       try {
         setLoading(true)
         setError(null)
-
-        const coachEmail = user.emailAddresses[0].emailAddress
         const response = await fetch(
           `/api/clients?coachEmail=${encodeURIComponent(coachEmail)}`
         )
