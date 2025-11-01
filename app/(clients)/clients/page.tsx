@@ -61,11 +61,14 @@ const ClientsPage = () => {
         )
         const data = await response.json()
 
-        if (data.success) {
-          setUsers(data.data.users)
-          setSessionLinks(data.data.sessionLinks)
+        if (data.success && data.data) {
+          // Ensure users is always an array, even if undefined/null
+          setUsers(Array.isArray(data.data.users) ? data.data.users : [])
+          setSessionLinks(data.data.sessionLinks || null)
         } else {
           setError(data.error || 'Failed to fetch clients')
+          setUsers([])
+          setSessionLinks(null)
         }
       } catch (err) {
         setError('Failed to fetch clients')

@@ -44,7 +44,17 @@ export async function PATCH(
       .where(eq(coaches.email, coachEmail))
       .limit(1)
 
-    if (!coach.length || !coach[0].clients || !coach[0].clients.includes(params.id)) {
+    // Handle cases where coach doesn't exist or clients is null/undefined/empty
+    if (!coach.length || !coach[0]) {
+      return NextResponse.json(
+        { success: false, error: 'Coach not found' },
+        { status: 404 }
+      )
+    }
+
+    const clientsArray = coach[0].clients
+    // Check if clients exists, is an array, and contains the client ID
+    if (!clientsArray || !Array.isArray(clientsArray) || clientsArray.length === 0 || !clientsArray.includes(params.id)) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized access to this client' },
         { status: 403 }
