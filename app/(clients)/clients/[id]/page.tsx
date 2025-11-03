@@ -28,6 +28,7 @@ import CareerStoryFiveDetailsDialog from '@/components/CareerStoryFiveDetailsDia
 import CareerStorySixDetailsDialog from '@/components/CareerStorySixDetailsDialog'
 import SessionReportDetailsDialog from '@/components/SessionReportDetailsDialog'
 import ScheduleCallDetailsDialog from '@/components/ScheduleCallDetailsDialog'
+import CareerOptionsMatrixDetailsDialog from '@/components/CareerOptionsMatrixDetailsDialog'
 
 interface Client {
   id: string
@@ -99,6 +100,8 @@ const ClientSessionsPage = () => {
     useState(false)
   const [sessionReportDialogOpen, setSessionReportDialogOpen] = useState(false)
   const [scheduleCallDialogOpen, setScheduleCallDialogOpen] = useState(false)
+  const [careerOptionsMatrixDialogOpen, setCareerOptionsMatrixDialogOpen] =
+    useState(false)
   const [selectedSession, setSelectedSession] = useState<Session | null>(null)
 
   useEffect(() => {
@@ -229,13 +232,17 @@ const ClientSessionsPage = () => {
       setSessionReportDialogOpen(true)
     } else if (session.formId === 'schedule-call') {
       setScheduleCallDialogOpen(true)
+    } else if (session.formId === 'career-options-matrix') {
+      setCareerOptionsMatrixDialogOpen(true)
     }
     // Add other form types here in the future
   }
 
-  // Filter out sessions with formId containing 'feedback'
+  // Filter out sessions with formId containing 'feedback' and 'daily-journaling'
   const filteredSessions = sessions.filter(
-    session => !session.formId.toLowerCase().includes('feedback')
+    session =>
+      !session.formId.toLowerCase().includes('feedback') &&
+      !session.formId.toLowerCase().includes('daily-journaling')
   )
 
   // Group sessions by session_id
@@ -582,6 +589,14 @@ const ClientSessionsPage = () => {
               }
             })
         }}
+      />
+
+      {/* Career Options Matrix Details Dialog */}
+      <CareerOptionsMatrixDetailsDialog
+        open={careerOptionsMatrixDialogOpen}
+        onOpenChange={setCareerOptionsMatrixDialogOpen}
+        clientId={clientId}
+        sessionId={selectedSession?.sessionId || 0}
       />
     </div>
   )

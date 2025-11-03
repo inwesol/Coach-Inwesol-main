@@ -20,6 +20,7 @@ import {
   myLifeCollageTable,
   careerStoryFive,
   careerStorySix,
+  careerOptionsMatrix,
   report,
   userSessionFormProgress,
   journeyProgress
@@ -601,6 +602,52 @@ export async function GET(
           summary: scheduleCallData[0].summary,
           coach_feedback: scheduleCallData[0].coach_feedback
         }
+      })
+    }
+
+    // Handle career-options-matrix form
+    if (formId === 'career-options-matrix') {
+      const { searchParams } = new URL(request.url)
+      const sessionIdParam = searchParams.get('sessionId')
+      
+      if (!sessionIdParam) {
+        return NextResponse.json(
+          { 
+            success: false, 
+            error: 'sessionId is required',
+            data: null 
+          },
+          { status: 400 }
+        )
+      }
+
+      const sessionId = parseInt(sessionIdParam)
+
+      const careerOptionsMatrixData = await db
+        .select()
+        .from(careerOptionsMatrix)
+        .where(
+          and(
+            eq(careerOptionsMatrix.userId, userId),
+            eq(careerOptionsMatrix.sessionId, sessionId)
+          )
+        )
+        .limit(1)
+
+      if (!careerOptionsMatrixData.length) {
+        return NextResponse.json(
+          { 
+            success: false, 
+            error: 'No career options matrix data found for this client',
+            data: null 
+          },
+          { status: 404 }
+        )
+      }
+
+      return NextResponse.json({
+        success: true,
+        data: careerOptionsMatrixData[0]
       })
     }
 
