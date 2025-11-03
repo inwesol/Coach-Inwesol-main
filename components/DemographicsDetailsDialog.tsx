@@ -16,7 +16,8 @@ import {
   Calendar,
   Briefcase,
   GraduationCap,
-  Heart
+  Heart,
+  Phone
 } from 'lucide-react'
 
 interface DemographicsData {
@@ -24,6 +25,7 @@ interface DemographicsData {
   user_id: string
   full_name: string | null
   email: string | null
+  phone_number: string | null
   age: number | null
   gender: string | null
   profession: string | null
@@ -161,6 +163,15 @@ const DemographicsDetailsDialog: React.FC<DemographicsDetailsDialogProps> = ({
                     <p className='flex items-center gap-2 text-lg'>
                       <Mail className='h-4 w-4' />
                       {demographicsData.email || 'Not provided'}
+                    </p>
+                  </div>
+                  <div>
+                    <label className='text-sm font-medium text-muted-foreground'>
+                      Phone Number
+                    </label>
+                    <p className='flex items-center gap-2 text-lg'>
+                      <Phone className='h-4 w-4' />
+                      {demographicsData.phone_number || 'Not provided'}
                     </p>
                   </div>
                   <div>

@@ -51,6 +51,7 @@ export const demographicsDetailsForm = pgTable(
     user_id: uuid("user_id").notNull(),
     full_name: varchar("full_name", { length: 100 }),
     email: varchar("email", { length: 100 }),
+    phone_number: varchar("phone_number", { length: 20 }),
     age: integer("age"),
     gender: varchar("gender", { length: 30 }),
     profession: varchar("profession", { length: 50 }),
