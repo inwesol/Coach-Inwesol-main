@@ -4,7 +4,14 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { ArrowLeft, Calendar, CheckCircle, Clock, XCircle } from 'lucide-react'
+import {
+  ArrowLeft,
+  Calendar,
+  CheckCircle,
+  Clock,
+  XCircle,
+  FileText
+} from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import DemographicsDetailsDialog from '@/components/DemographicsDetailsDialog'
@@ -29,6 +36,14 @@ import CareerStorySixDetailsDialog from '@/components/CareerStorySixDetailsDialo
 import SessionReportDetailsDialog from '@/components/SessionReportDetailsDialog'
 import ScheduleCallDetailsDialog from '@/components/ScheduleCallDetailsDialog'
 import CareerOptionsMatrixDetailsDialog from '@/components/CareerOptionsMatrixDetailsDialog'
+import dynamic from 'next/dynamic'
+
+const SessionGuidePdfDialog = dynamic(
+  () => import('@/components/SessionGuidePdfDialog'),
+  {
+    ssr: false
+  }
+)
 
 interface Client {
   id: string
@@ -103,6 +118,11 @@ const ClientSessionsPage = () => {
   const [careerOptionsMatrixDialogOpen, setCareerOptionsMatrixDialogOpen] =
     useState(false)
   const [selectedSession, setSelectedSession] = useState<Session | null>(null)
+  const [selectedPdf, setSelectedPdf] = useState<{
+    path: string
+    title: string
+  } | null>(null)
+  const [pdfDialogOpen, setPdfDialogOpen] = useState(false)
 
   useEffect(() => {
     const fetchClientSessions = async () => {
@@ -266,6 +286,69 @@ const ClientSessionsPage = () => {
     (a, b) => a.sessionId - b.sessionId
   )
 
+  // Session Guides data
+  const sessionGuides = [
+    {
+      id: '0',
+      title: 'Session 0',
+      path: '/pdfs/session-wise-guide/Session 0.pdf'
+    },
+    {
+      id: '1',
+      title: 'Session 1',
+      path: '/pdfs/session-wise-guide/Session 1.pdf'
+    },
+    {
+      id: '2',
+      title: 'Session 2',
+      path: '/pdfs/session-wise-guide/Session 2.pdf'
+    },
+    {
+      id: '3',
+      title: 'Session 3',
+      path: '/pdfs/session-wise-guide/Session 3.pdf'
+    },
+    {
+      id: '4',
+      title: 'Session 4',
+      path: '/pdfs/session-wise-guide/Session 4.pdf'
+    },
+    {
+      id: '5',
+      title: 'Session 5',
+      path: '/pdfs/session-wise-guide/Session 5.pdf'
+    },
+    {
+      id: '6',
+      title: 'Session 6',
+      path: '/pdfs/session-wise-guide/Session 6.pdf'
+    },
+    {
+      id: '7',
+      title: 'Session 7',
+      path: '/pdfs/session-wise-guide/Session 7.pdf'
+    },
+    {
+      id: '8',
+      title: 'Session 8',
+      path: '/pdfs/session-wise-guide/Session 8.pdf'
+    },
+    {
+      id: 'conversation',
+      title: 'Conversation Guide - Parents Session 0 & 8',
+      path: '/pdfs/session-wise-guide/Conversation Guide_Parents_Session 0 & 8.pdf'
+    }
+  ]
+
+  const handlePdfClick = (guide: {
+    id: string
+    title: string
+    path: string
+  }) => {
+    setSelectedPdf({ path: guide.path, title: guide.title })
+    setPdfDialogOpen(true)
+  }
+
   if (loading) {
     return (
       <div className='container mx-auto py-10'>
@@ -344,9 +427,30 @@ const ClientSessionsPage = () => {
         </div>
       </div>
 
+      {/* Session Guides */}
+      <div className='mb-8'>
+        <h2 className='mb-6 text-2xl font-semibold'>Session Guides</h2>
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+          {sessionGuides.map(guide => (
+            <Card
+              key={guide.id}
+              className='cursor-pointer border-l-4 border-l-teal-200 transition-shadow hover:shadow-md'
+              onClick={() => handlePdfClick(guide)}
+            >
+              <CardHeader>
+                <CardTitle className='flex items-center gap-2'>
+                  <FileText className='h-5 w-5' />
+                  {guide.title}
+                </CardTitle>
+              </CardHeader>
+            </Card>
+          ))}
+        </div>
+      </div>
+
       {/* Sessions Cards */}
       <div className='mb-6'>
-        <h2 className='mb-6 text-2xl font-semibold'>Sessions</h2>
+        <h2 className='mb-6 text-2xl font-semibold'>Sessions Response</h2>
         {filteredSessions.length === 0 ? (
           <div className='flex h-32 items-center justify-center'>
             <div className='text-center text-muted-foreground'>
@@ -598,6 +702,16 @@ const ClientSessionsPage = () => {
         clientId={clientId}
         sessionId={selectedSession?.sessionId || 0}
       />
+
+      {/* Session Guide PDF Dialog */}
+      {selectedPdf && (
+        <SessionGuidePdfDialog
+          open={pdfDialogOpen}
+          onOpenChange={setPdfDialogOpen}
+          pdfPath={selectedPdf.path}
+          title={selectedPdf.title}
+        />
+      )}
     </div>
   )
 }
