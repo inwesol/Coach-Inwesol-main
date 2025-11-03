@@ -1,7 +1,44 @@
 'use client'
 import { useState, useCallback } from 'react'
-import { useUser } from '@clerk/nextjs'
+import { useUser, useAuth } from '@clerk/nextjs'
 import { Eye, EyeOff, Lock, CheckCircle, XCircle, Shield } from 'lucide-react'
+
+// Define proper TypeScript interfaces
+interface PasswordInputProps {
+  label: string
+  value: string
+  onChange: (value: string) => void
+  show: boolean
+  onToggle: () => void
+  placeholder: string
+}
+
+interface MessageState {
+  type: 'success' | 'error'
+  text: string
+}
+
+interface PasswordsState {
+  currentPassword: string
+  newPassword: string
+  confirmPassword: string
+}
+
+interface ShowPasswordsState {
+  current: boolean
+  new: boolean
+  confirm: boolean
+}
+
+// Define error interface for Clerk API errors
+interface ClerkError {
+  errors?: Array<{
+    code?: string
+    longMessage?: string
+    message?: string
+  }>
+  message?: string
+}
 
 // Memoized PasswordInput component to prevent unnecessary re-renders
 const PasswordInput = ({
@@ -11,14 +48,7 @@ const PasswordInput = ({
   show,
   onToggle,
   placeholder
-}: {
-  label: string
-  value: string
-  onChange: (value: string) => void
-  show: boolean
-  onToggle: () => void
-  placeholder: string
-}) => (
+}: PasswordInputProps) => (
   <div className='space-y-3'>
     <label className='block text-sm font-semibold text-gray-800'>{label}</label>
     <div className='relative'>
@@ -35,6 +65,7 @@ const PasswordInput = ({
         type='button'
         onClick={onToggle}
         className='absolute right-4 top-1/2 -translate-y-1/2 transform p-1 text-gray-500 transition-colors duration-200 hover:text-[#00B24B]'
+        aria-label={show ? 'Hide password' : 'Show password'}
       >
         {show ? <EyeOff size={22} /> : <Eye size={22} />}
       </button>
@@ -44,25 +75,23 @@ const PasswordInput = ({
 
 export default function SettingsPage() {
   const { user } = useUser()
-  const [passwords, setPasswords] = useState({
+  const { getToken } = useAuth()
+  const [passwords, setPasswords] = useState<PasswordsState>({
     currentPassword: '',
     newPassword: '',
     confirmPassword: ''
   })
-  const [showPasswords, setShowPasswords] = useState({
+  const [showPasswords, setShowPasswords] = useState<ShowPasswordsState>({
     current: false,
     new: false,
     confirm: false
   })
-  const [isLoading, setIsLoading] = useState(false)
-  const [message, setMessage] = useState<{
-    type: 'success' | 'error'
-    text: string
-  } | null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [message, setMessage] = useState<MessageState | null>(null)
 
   // Use useCallback to prevent function recreation on every render
   const handleInputChange = useCallback(
-    (field: string, value: string) => {
+    (field: keyof PasswordsState, value: string) => {
       setPasswords(prev => ({
         ...prev,
         [field]: value
@@ -74,7 +103,7 @@ export default function SettingsPage() {
   )
 
   const togglePasswordVisibility = useCallback(
-    (field: 'current' | 'new' | 'confirm') => {
+    (field: keyof ShowPasswordsState) => {
       setShowPasswords(prev => ({
         ...prev,
         [field]: !prev[field]
@@ -83,7 +112,7 @@ export default function SettingsPage() {
     []
   )
 
-  const validatePasswords = useCallback(() => {
+  const validatePasswords = useCallback((): boolean => {
     if (!passwords.currentPassword || passwords.currentPassword.length < 3) {
       setMessage({
         type: 'error',
@@ -116,7 +145,7 @@ export default function SettingsPage() {
     return true
   }, [passwords])
 
-  const handleSubmit = useCallback(async () => {
+  const handleSubmit = useCallback(async (): Promise<void> => {
     if (!validatePasswords()) return
 
     setIsLoading(true)
@@ -127,6 +156,33 @@ export default function SettingsPage() {
         throw new Error('User not found')
       }
 
+      // Check if email is verified before attempting password update
+      const primaryEmail = user.primaryEmailAddress
+      const emailVerified =
+        primaryEmail?.verification?.status === 'verified' ||
+        (primaryEmail as any)?.verificationStatus === 'verified' ||
+        user.emailAddresses?.some(
+          email =>
+            email.id === primaryEmail?.id &&
+            (email.verification?.status === 'verified' ||
+              (email as any)?.verificationStatus === 'verified')
+        )
+
+      if (!emailVerified) {
+        setMessage({
+          type: 'error',
+          text: 'Please verify your email address before changing your password. Check your inbox for a verification email.'
+        })
+        setIsLoading(false)
+        return
+      }
+
+      // Ensure session is active by getting a fresh token
+      // This helps Clerk recognize the session is valid
+      await getToken()
+
+      // Attempt to update the password
+      // Clerk will handle re-verification automatically if required
       await user.updatePassword({
         currentPassword: passwords.currentPassword,
         newPassword: passwords.newPassword
@@ -138,17 +194,36 @@ export default function SettingsPage() {
         newPassword: '',
         confirmPassword: ''
       })
-    } catch (error: any) {
+    } catch (error) {
       console.error('Password update error:', error)
 
-      if (error?.errors?.[0]?.code === 'form_password_incorrect') {
+      const clerkError = error as ClerkError
+      const errorMessage =
+        typeof clerkError === 'string'
+          ? clerkError
+          : clerkError?.message ||
+            clerkError?.errors?.[0]?.message ||
+            clerkError?.errors?.[0]?.longMessage ||
+            'Failed to update password. Please check your current password and try again.'
+
+      // Check if it's a verification error
+      if (
+        errorMessage.includes('additional verification') ||
+        errorMessage.includes('verification required') ||
+        errorMessage.toLowerCase().includes('verification')
+      ) {
+        setMessage({
+          type: 'error',
+          text: 'Additional verification is required. Please sign out and sign back in, then try again. If your email is not verified, please verify it first.'
+        })
+      } else if (clerkError?.errors?.[0]?.code === 'form_password_incorrect') {
         setMessage({ type: 'error', text: 'Current password is incorrect' })
-      } else if (error?.errors?.[0]?.code === 'form_password_pwned') {
+      } else if (clerkError?.errors?.[0]?.code === 'form_password_pwned') {
         setMessage({
           type: 'error',
           text: 'This password has been found in a data breach. Please choose a different password.'
         })
-      } else if (error?.errors?.[0]?.code === 'form_password_too_common') {
+      } else if (clerkError?.errors?.[0]?.code === 'form_password_too_common') {
         setMessage({
           type: 'error',
           text: 'This password is too common. Please choose a stronger password.'
@@ -156,15 +231,13 @@ export default function SettingsPage() {
       } else {
         setMessage({
           type: 'error',
-          text:
-            error?.errors?.[0]?.message ||
-            'Failed to update password. Please check your current password and try again.'
+          text: errorMessage
         })
       }
+    } finally {
+      setIsLoading(false)
     }
-
-    setIsLoading(false)
-  }, [validatePasswords, user, passwords])
+  }, [validatePasswords, user, passwords, getToken])
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 p-6'>
