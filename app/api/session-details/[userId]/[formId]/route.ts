@@ -21,7 +21,8 @@ import {
   careerStoryFive,
   careerStorySix,
   report,
-  userSessionFormProgress
+  userSessionFormProgress,
+  journeyProgress
 } from '@/lib/db/schema'
 import { eq, and } from 'drizzle-orm'
 import { auth } from '@clerk/nextjs/server'
@@ -752,6 +753,43 @@ export async function POST(
           status: 'completed',
           completedAt: completedAtStr
         })
+      }
+
+      // Update journey progress when session-report is marked as completed
+      const [jp] = await db
+        .select()
+        .from(journeyProgress)
+        .where(eq(journeyProgress.userId, userId))
+        .limit(1)
+
+      if (jp) {
+        const completedSessions: number[] =
+          (jp.completedSessions as number[]) ?? []
+        const isNewSession = !completedSessions.includes(sessionId)
+        
+        if (isNewSession) {
+          completedSessions.push(sessionId)
+        }
+        
+        // Calculate the new total score
+        // Each completed session is worth 100 points (only add if it's a new session)
+        const newTotalScore = isNewSession
+          ? (jp.totalScore ?? 0) + 100
+          : (jp.totalScore ?? 0)
+
+        // Set current_session to the next one
+        const nextSession = Math.max(...completedSessions) + 1
+
+        await db
+          .update(journeyProgress)
+          .set({
+            completedSessions: completedSessions,
+            lastActiveDate: new Date().toISOString(),
+            updatedAt: new Date(),
+            currentSession: nextSession,
+            totalScore: newTotalScore,
+          })
+          .where(eq(journeyProgress.userId, userId))
       }
 
       return NextResponse.json({
