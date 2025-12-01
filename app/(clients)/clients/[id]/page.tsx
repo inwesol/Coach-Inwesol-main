@@ -334,8 +334,13 @@ const ClientSessionsPage = () => {
       path: '/pdfs/session-wise-guide/Session 8.pdf'
     },
     {
+      id: 'check-in',
+      title: 'Check-in Session Guide',
+      path: '/pdfs/session-wise-guide/Check-in-Session.pdf'
+    },
+    {
       id: 'conversation',
-      title: 'Conversation Guide - Parents Session 0 & 8',
+      title: 'Parents Conversation Guide',
       path: '/pdfs/session-wise-guide/Conversation Guide_Parents_Session 0 & 8.pdf'
     }
   ]
