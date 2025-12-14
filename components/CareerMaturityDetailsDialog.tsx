@@ -9,13 +9,22 @@ import {
 } from '@/components/ui/dialog'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Loader2, FileText, CheckCircle, Clock } from 'lucide-react'
+import {
+  Loader2,
+  FileText,
+  CheckCircle,
+  Clock,
+  Brain,
+  TrendingUp
+} from 'lucide-react'
 
 interface CareerMaturityData {
   id: string
   user_id: string
   session_id: number
   answers: string
+  score?: number
+  subscale_scores?: Record<string, number>
   created_at: string
   updated_at: string
 }
@@ -237,6 +246,24 @@ const CareerMaturityDetailsDialog: React.FC<
     return String(answer)
   }
 
+  const getScoreLevel = (score: number) => {
+    if (score >= 80)
+      return { level: 'High', color: 'text-green-600', bgColor: 'bg-green-100' }
+    if (score >= 60)
+      return {
+        level: 'Moderate',
+        color: 'text-yellow-600',
+        bgColor: 'bg-yellow-100'
+      }
+    if (score >= 40)
+      return {
+        level: 'Low',
+        color: 'text-orange-600',
+        bgColor: 'bg-orange-100'
+      }
+    return { level: 'Very Low', color: 'text-red-600', bgColor: 'bg-red-100' }
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className='max-h-[90vh] max-w-5xl overflow-y-auto'>
@@ -265,6 +292,111 @@ const CareerMaturityDetailsDialog: React.FC<
 
         {careerMaturityData && !loading && (
           <div className='space-y-6'>
+            {/* Assessment Overview */}
+            <Card>
+              <CardHeader>
+                <CardTitle className='flex items-center gap-2'>
+                  <TrendingUp className='h-5 w-5' />
+                  Assessment Overview
+                </CardTitle>
+              </CardHeader>
+              <CardContent className='space-y-4'>
+                <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
+                  <div>
+                    <label className='text-sm font-medium text-muted-foreground'>
+                      Session ID
+                    </label>
+                    <p className='text-lg'>{careerMaturityData.session_id}</p>
+                  </div>
+                  <div>
+                    <label className='text-sm font-medium text-muted-foreground'>
+                      Status
+                    </label>
+                    <div className='mt-1'>
+                      {getCompletionBadge(getCompletionStatus())}
+                    </div>
+                  </div>
+                  {careerMaturityData.score !== undefined &&
+                    careerMaturityData.score !== null && (
+                      <div>
+                        <label className='text-sm font-medium text-muted-foreground'>
+                          Overall Score
+                        </label>
+                        <div className='mt-1'>
+                          <span
+                            className={`text-2xl font-bold ${getScoreLevel(careerMaturityData.score).color}`}
+                          >
+                            {careerMaturityData.score}
+                          </span>
+                          <span className='ml-2 text-sm text-muted-foreground'>
+                            / 100
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Subscale Scores */}
+            {careerMaturityData.subscale_scores &&
+              Object.keys(careerMaturityData.subscale_scores).length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className='flex items-center gap-2'>
+                      <Brain className='h-5 w-5' />
+                      Subscale Scores
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+                      {Object.entries(careerMaturityData.subscale_scores).map(
+                        ([key, value]) => (
+                          <div
+                            key={key}
+                            className='rounded-lg border bg-gray-50 p-4'
+                          >
+                            <div className='flex items-center justify-between'>
+                              <div>
+                                <h4 className='font-medium capitalize text-gray-900'>
+                                  {key.replace(/_/g, ' ')}
+                                </h4>
+                                <p className='text-sm text-muted-foreground'>
+                                  Subscale Score
+                                </p>
+                              </div>
+                              <div className='text-right'>
+                                <div
+                                  className={`text-xl font-semibold ${getScoreLevel(value).color}`}
+                                >
+                                  {value}
+                                </div>
+                                <div className='text-xs text-muted-foreground'>
+                                  / 100
+                                </div>
+                              </div>
+                            </div>
+                            <div className='mt-2'>
+                              <div className='flex items-center gap-2'>
+                                <div className='h-2 flex-1 rounded-full bg-gray-200'>
+                                  <div
+                                    className={`h-2 rounded-full transition-all duration-300 ${getScoreLevel(value).bgColor.replace('-100', '-500')}`}
+                                    style={{ width: `${value}%` }}
+                                  ></div>
+                                </div>
+                                <span className='text-sm text-muted-foreground'>
+                                  {Math.round(value)}%
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
             {/* Assessment Answers */}
             <Card>
               <CardHeader>

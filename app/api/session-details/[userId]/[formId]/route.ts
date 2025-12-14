@@ -138,9 +138,115 @@ export async function GET(
         )
       }
 
+      // Fetch score data from user_session_form_progress
+      // Use the session_id from careerMaturityData to match the correct record
+      let progressData = await db
+        .select()
+        .from(userSessionFormProgress)
+        .where(
+          and(
+            eq(userSessionFormProgress.userId, userId),
+            eq(userSessionFormProgress.formId, 'career-maturity'),
+            eq(userSessionFormProgress.sessionId, careerMaturityData[0].session_id)
+          )
+        )
+        .limit(1)
+
+      // Fallback: if no data found with sessionId, try without sessionId filter
+      if (progressData.length === 0) {
+        progressData = await db
+          .select()
+          .from(userSessionFormProgress)
+          .where(
+            and(
+              eq(userSessionFormProgress.userId, userId),
+              eq(userSessionFormProgress.formId, 'career-maturity')
+            )
+          )
+          .orderBy(userSessionFormProgress.sessionId)
+          .limit(1)
+      }
+
+      let scoreData: { score?: number; subscale_scores?: Record<string, number> } = {}
+      
+      if (progressData.length > 0) {
+        
+        if (progressData[0].insights) {
+          const insights = progressData[0].insights as any
+          
+          // Handle insights - it might be an object or need parsing
+          let parsedInsights = insights
+          if (typeof insights === 'string') {
+            try {
+              parsedInsights = JSON.parse(insights)
+            } catch (e) {
+              console.error('Error parsing insights:', e)
+              parsedInsights = {}
+            }
+          }
+          
+          // Extract subscale scores from insights.score
+          // The insights.score key contains all subscale scores as an object
+          if (parsedInsights && parsedInsights.score) {
+            const scoreDataFromInsights = parsedInsights.score
+            
+            // Handle if score is an object containing subscale scores
+            if (typeof scoreDataFromInsights === 'object' && scoreDataFromInsights !== null && !Array.isArray(scoreDataFromInsights)) {
+              // Extract subscale_scores from insights.score
+              scoreData.subscale_scores = {}
+              
+              // Copy all numeric values from insights.score as subscale scores
+              for (const [key, value] of Object.entries(scoreDataFromInsights)) {
+                if (typeof value === 'number') {
+                  scoreData.subscale_scores[key] = value
+                } else if (value !== null && value !== undefined) {
+                  const numValue = parseFloat(String(value))
+                  if (!isNaN(numValue)) {
+                    scoreData.subscale_scores[key] = numValue
+                  }
+                }
+              }
+              
+              // Calculate overall score as average of all subscale scores
+              if (Object.keys(scoreData.subscale_scores).length > 0) {
+                const scores = Object.values(scoreData.subscale_scores)
+                const sum = scores.reduce((acc, val) => acc + val, 0)
+                scoreData.score = Math.round((sum / scores.length) * 100) / 100 // Round to 2 decimal places
+              }
+            }
+            // Fallback: if score is a direct number, use it as overall score
+            else if (typeof scoreDataFromInsights === 'number') {
+              scoreData.score = scoreDataFromInsights
+            }
+            // Fallback: if score is a string that can be parsed as number
+            else if (typeof scoreDataFromInsights === 'string') {
+              const numValue = parseFloat(scoreDataFromInsights)
+              if (!isNaN(numValue)) {
+                scoreData.score = numValue
+              }
+            }
+          }
+          
+          // Also check for direct subscale_scores key (fallback)
+          if (!scoreData.subscale_scores && parsedInsights && parsedInsights.subscale_scores && typeof parsedInsights.subscale_scores === 'object') {
+            scoreData.subscale_scores = parsedInsights.subscale_scores
+            
+            // Calculate overall score if not already set
+            if (!scoreData.score && scoreData.subscale_scores && Object.keys(scoreData.subscale_scores).length > 0) {
+              const scores = Object.values(scoreData.subscale_scores)
+              const sum = scores.reduce((acc, val) => acc + val, 0)
+              scoreData.score = Math.round((sum / scores.length) * 100) / 100
+            }
+          }
+        }
+      }
+
       return NextResponse.json({
         success: true,
-        data: careerMaturityData[0]
+        data: {
+          ...careerMaturityData[0],
+          ...scoreData
+        }
       })
     }
 
@@ -163,9 +269,115 @@ export async function GET(
         )
       }
 
+      // Fetch score data from user_session_form_progress
+      // Use the session_id from postCareerMaturityData to match the correct record
+      let progressData = await db
+        .select()
+        .from(userSessionFormProgress)
+        .where(
+          and(
+            eq(userSessionFormProgress.userId, userId),
+            eq(userSessionFormProgress.formId, 'post-career-maturity'),
+            eq(userSessionFormProgress.sessionId, postCareerMaturityData[0].session_id)
+          )
+        )
+        .limit(1)
+
+      // Fallback: if no data found with sessionId, try without sessionId filter
+      if (progressData.length === 0) {
+        progressData = await db
+          .select()
+          .from(userSessionFormProgress)
+          .where(
+            and(
+              eq(userSessionFormProgress.userId, userId),
+              eq(userSessionFormProgress.formId, 'post-career-maturity')
+            )
+          )
+          .orderBy(userSessionFormProgress.sessionId)
+          .limit(1)
+      }
+
+      let scoreData: { score?: number; subscale_scores?: Record<string, number> } = {}
+      
+      if (progressData.length > 0) {
+        
+        if (progressData[0].insights) {
+          const insights = progressData[0].insights as any
+          
+          // Handle insights - it might be an object or need parsing
+          let parsedInsights = insights
+          if (typeof insights === 'string') {
+            try {
+              parsedInsights = JSON.parse(insights)
+            } catch (e) {
+              console.error('Error parsing insights:', e)
+              parsedInsights = {}
+            }
+          }
+          
+          // Extract subscale scores from insights.score
+          // The insights.score key contains all subscale scores as an object
+          if (parsedInsights && parsedInsights.score) {
+            const scoreDataFromInsights = parsedInsights.score
+            
+            // Handle if score is an object containing subscale scores
+            if (typeof scoreDataFromInsights === 'object' && scoreDataFromInsights !== null && !Array.isArray(scoreDataFromInsights)) {
+              // Extract subscale_scores from insights.score
+              scoreData.subscale_scores = {}
+              
+              // Copy all numeric values from insights.score as subscale scores
+              for (const [key, value] of Object.entries(scoreDataFromInsights)) {
+                if (typeof value === 'number') {
+                  scoreData.subscale_scores[key] = value
+                } else if (value !== null && value !== undefined) {
+                  const numValue = parseFloat(String(value))
+                  if (!isNaN(numValue)) {
+                    scoreData.subscale_scores[key] = numValue
+                  }
+                }
+              }
+              
+              // Calculate overall score as average of all subscale scores
+              if (Object.keys(scoreData.subscale_scores).length > 0) {
+                const scores = Object.values(scoreData.subscale_scores)
+                const sum = scores.reduce((acc, val) => acc + val, 0)
+                scoreData.score = Math.round((sum / scores.length) * 100) / 100 // Round to 2 decimal places
+              }
+            }
+            // Fallback: if score is a direct number, use it as overall score
+            else if (typeof scoreDataFromInsights === 'number') {
+              scoreData.score = scoreDataFromInsights
+            }
+            // Fallback: if score is a string that can be parsed as number
+            else if (typeof scoreDataFromInsights === 'string') {
+              const numValue = parseFloat(scoreDataFromInsights)
+              if (!isNaN(numValue)) {
+                scoreData.score = numValue
+              }
+            }
+          }
+          
+          // Also check for direct subscale_scores key (fallback)
+          if (!scoreData.subscale_scores && parsedInsights && parsedInsights.subscale_scores && typeof parsedInsights.subscale_scores === 'object') {
+            scoreData.subscale_scores = parsedInsights.subscale_scores
+            
+            // Calculate overall score if not already set
+            if (!scoreData.score && scoreData.subscale_scores && Object.keys(scoreData.subscale_scores).length > 0) {
+              const scores = Object.values(scoreData.subscale_scores)
+              const sum = scores.reduce((acc, val) => acc + val, 0)
+              scoreData.score = Math.round((sum / scores.length) * 100) / 100
+            }
+          }
+        }
+      }
+
       return NextResponse.json({
         success: true,
-        data: postCareerMaturityData[0]
+        data: {
+          ...postCareerMaturityData[0],
+          ...scoreData
+        }
       })
     }
 
