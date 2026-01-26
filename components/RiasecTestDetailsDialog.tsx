@@ -129,6 +129,18 @@ const RiasecTestDetailsDialog: React.FC<RiasecTestDetailsDialogProps> = ({
     }
   ]
 
+  const formatKeyName = (key: string) => {
+    // Replace underscores with spaces
+    let formatted = key.replace(/_/g, ' ')
+    // Split on camelCase boundaries (before capital letters)
+    formatted = formatted.replace(/([a-z])([A-Z])/g, '$1 $2')
+    // Capitalize first letter of each word
+    return formatted
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ')
+  }
+
   const getCompletionStatus = () => {
     if (!riasecTestData) return 'Unknown'
     if (riasecTestData.selected_answers && riasecTestData.interest_code) {
@@ -141,7 +153,7 @@ const RiasecTestDetailsDialog: React.FC<RiasecTestDetailsDialogProps> = ({
     switch (status.toLowerCase()) {
       case 'completed':
         return (
-          <Badge className='bg-green-100 text-green-800'>
+          <Badge className='bg-green-100 text-green-700 hover:green-800 hover:bg-green-200'>
             <CheckCircle className='mr-1 h-3 w-3' />
             Completed
           </Badge>
@@ -229,31 +241,29 @@ const RiasecTestDetailsDialog: React.FC<RiasecTestDetailsDialogProps> = ({
                   Test Overview
                 </CardTitle>
               </CardHeader>
-              <CardContent className='space-y-4'>
-                <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
-                  <div>
+              <CardContent>
+                <div className='flex items-center justify-between gap-4'>
+                  <div className='flex items-center gap-2'>
                     <label className='text-sm font-medium text-muted-foreground'>
-                      Session ID
+                      Session ID:
                     </label>
-                    <p className='text-lg'>{riasecTestData.session_id}</p>
+                    <p className='text-sm font-medium'>{riasecTestData.session_id}</p>
                   </div>
-                  <div>
+                  <div className='flex items-center gap-2'>
                     <label className='text-sm font-medium text-muted-foreground'>
-                      Status
+                      Status:
                     </label>
-                    <div className='mt-1'>
+                    <div>
                       {getCompletionBadge(getCompletionStatus())}
                     </div>
                   </div>
-                  <div>
+                  <div className='flex items-center gap-2'>
                     <label className='text-sm font-medium text-muted-foreground'>
-                      Interest Code
+                      Interest Code:
                     </label>
-                    <div className='mt-1'>
-                      <span className='text-2xl font-bold text-blue-600'>
-                        {riasecTestData.interest_code}
-                      </span>
-                    </div>
+                    <span className='text-xl font-bold text-blue-600'>
+                      {riasecTestData.interest_code}
+                    </span>
                   </div>
                 </div>
               </CardContent>
@@ -271,58 +281,33 @@ const RiasecTestDetailsDialog: React.FC<RiasecTestDetailsDialogProps> = ({
                   </CardHeader>
                   <CardContent>
                     <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-                      {getSortedCategories().map(
-                        ({ code, count, percentage }) => {
-                          const IconComponent = getCategoryIcon(code)
-                          const colorClass = getCategoryColor(code)
-                          const description = getCategoryDescription(code)
+                      {Object.entries(riasecTestData.category_counts).map(
+                        ([key, value]) => {
+                          const category = riasecCategories.find(
+                            cat => cat.code === key
+                          )
+                          const categoryName = category?.name || formatKeyName(key)
+                          const categoryDescription = category?.description || ''
 
                           return (
                             <div
-                              key={code}
+                              key={key}
                               className='rounded-lg border bg-gray-50 p-4'
                             >
                               <div className='flex items-center justify-between'>
-                                <div className='flex items-center gap-3'>
-                                  <div
-                                    className={`rounded-full p-2 ${colorClass}`}
-                                  >
-                                    <IconComponent className='h-4 w-4' />
-                                  </div>
-                                  <div>
-                                    <h4 className='font-medium text-gray-900'>
-                                      {code} -{' '}
-                                      {
-                                        riasecCategories.find(
-                                          cat => cat.code === code
-                                        )?.name
-                                      }
-                                    </h4>
-                                    <p className='text-sm text-muted-foreground'>
-                                      {description}
-                                    </p>
-                                  </div>
+                                <div className='flex-1'>
+                                  <h4 className='font-medium text-gray-900'>
+                                    {categoryName}
+                                  </h4>
+                                  <p className='mt-1 text-xs text-muted-foreground'>
+                                    This is a dummy description for the subscale score. It provides additional context about the measurement.
+                                  </p>
                                 </div>
+                                <div className='mx-4 h-12 w-px bg-gray-300'></div>
                                 <div className='text-right'>
                                   <div className='text-xl font-semibold text-blue-600'>
-                                    {count}
+                                    {value}
                                   </div>
-                                  <div className='text-xs text-muted-foreground'>
-                                    {percentage}%
-                                  </div>
-                                </div>
-                              </div>
-                              <div className='mt-3'>
-                                <div className='flex items-center gap-2'>
-                                  <div className='h-2 flex-1 rounded-full bg-gray-200'>
-                                    <div
-                                      className='h-2 rounded-full bg-blue-500 transition-all duration-300'
-                                      style={{ width: `${percentage}%` }}
-                                    ></div>
-                                  </div>
-                                  <span className='text-sm text-muted-foreground'>
-                                    {percentage}%
-                                  </span>
                                 </div>
                               </div>
                             </div>

@@ -143,7 +143,7 @@ const PersonalityTestDetailsDialog: React.FC<
     switch (status.toLowerCase()) {
       case 'completed':
         return (
-          <Badge className='bg-green-100 text-green-800'>
+          <Badge className='bg-green-100 text-green-700 hover:green-800 hover:bg-green-200'>
             <CheckCircle className='mr-1 h-3 w-3' />
             Completed
           </Badge>
@@ -158,24 +158,6 @@ const PersonalityTestDetailsDialog: React.FC<
       default:
         return <Badge className='bg-gray-100 text-gray-800'>{status}</Badge>
     }
-  }
-
-  const getScoreLevel = (score: number) => {
-    if (score >= 80)
-      return { level: 'High', color: 'text-green-600', bgColor: 'bg-green-100' }
-    if (score >= 60)
-      return {
-        level: 'Moderate',
-        color: 'text-yellow-600',
-        bgColor: 'bg-yellow-100'
-      }
-    if (score >= 40)
-      return {
-        level: 'Low',
-        color: 'text-orange-600',
-        bgColor: 'bg-orange-100'
-      }
-    return { level: 'Very Low', color: 'text-red-600', bgColor: 'bg-red-100' }
   }
 
   return (
@@ -214,36 +196,29 @@ const PersonalityTestDetailsDialog: React.FC<
                   Assessment Overview
                 </CardTitle>
               </CardHeader>
-              <CardContent className='space-y-4'>
-                <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
-                  <div>
+              <CardContent>
+                <div className='flex items-center justify-between gap-4'>
+                  <div className='flex items-center gap-2'>
                     <label className='text-sm font-medium text-muted-foreground'>
-                      Session ID
+                      Session ID:
                     </label>
-                    <p className='text-lg'>{personalityTestData.session_id}</p>
+                    <p className='text-sm font-medium'>{personalityTestData.session_id}</p>
                   </div>
-                  <div>
+                  <div className='flex items-center gap-2'>
                     <label className='text-sm font-medium text-muted-foreground'>
-                      Status
+                      Status:
                     </label>
-                    <div className='mt-1'>
+                    <div>
                       {getCompletionBadge(getCompletionStatus())}
                     </div>
                   </div>
-                  <div>
+                  <div className='flex items-center gap-2'>
                     <label className='text-sm font-medium text-muted-foreground'>
-                      Overall Score
+                      Overall Score:
                     </label>
-                    <div className='mt-1'>
-                      <span
-                        className={`text-2xl font-bold ${getScoreLevel(parseFloat(personalityTestData.score)).color}`}
-                      >
-                        {personalityTestData.score}
-                      </span>
-                      <span className='ml-2 text-sm text-muted-foreground'>
-                        / 100
-                      </span>
-                    </div>
+                    <span className='text-xl font-bold text-blue-600'>
+                      {Math.round(parseFloat(personalityTestData.score))}%
+                    </span>
                   </div>
                 </div>
               </CardContent>
@@ -268,36 +243,19 @@ const PersonalityTestDetailsDialog: React.FC<
                             className='rounded-lg border bg-gray-50 p-4'
                           >
                             <div className='flex items-center justify-between'>
-                              <div>
+                              <div className='flex-1'>
                                 <h4 className='font-medium capitalize text-gray-900'>
                                   {key.replace(/_/g, ' ')}
                                 </h4>
-                                <p className='text-sm text-muted-foreground'>
-                                  Subscale Score
+                                <p className='mt-1 text-xs text-muted-foreground'>
+                                  This is a dummy description for the subscale score. It provides additional context about the measurement.
                                 </p>
                               </div>
+                              <div className='mx-4 h-12 w-px bg-gray-300'></div>
                               <div className='text-right'>
-                                <div
-                                  className={`text-xl font-semibold ${getScoreLevel(value).color}`}
-                                >
-                                  {value}
-                                </div>
-                                <div className='text-xs text-muted-foreground'>
-                                  / 100
-                                </div>
-                              </div>
-                            </div>
-                            <div className='mt-2'>
-                              <div className='flex items-center gap-2'>
-                                <div className='h-2 flex-1 rounded-full bg-gray-200'>
-                                  <div
-                                    className={`h-2 rounded-full transition-all duration-300 ${getScoreLevel(value).bgColor.replace('bg-', 'bg-').replace('-100', '-500')}`}
-                                    style={{ width: `${value}%` }}
-                                  ></div>
-                                </div>
-                                <span className='text-sm text-muted-foreground'>
+                                <div className='text-xl font-semibold text-blue-600'>
                                   {Math.round(value)}%
-                                </span>
+                                </div>
                               </div>
                             </div>
                           </div>
