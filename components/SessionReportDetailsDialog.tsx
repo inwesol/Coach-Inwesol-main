@@ -59,7 +59,7 @@ const SessionReportDetailsDialog: React.FC<SessionReportDetailsDialogProps> = ({
       setError(null)
 
       const response = await fetch(
-        `/api/session-details/${clientId}/session-report`
+        `/api/session-details/${clientId}/session-report?sessionId=${sessionId}`
       )
       const data = await response.json()
 

@@ -54,10 +54,10 @@ export async function GET(
 
       if (!demographicsData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No demographics data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -79,10 +79,10 @@ export async function GET(
 
       if (!preAssessmentData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No pre-assessment data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -104,10 +104,10 @@ export async function GET(
 
       if (!postCoachingData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No post-coaching data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -129,10 +129,10 @@ export async function GET(
 
       if (!careerMaturityData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No career maturity data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -168,12 +168,12 @@ export async function GET(
       }
 
       let scoreData: { score?: number; subscale_scores?: Record<string, number> } = {}
-      
+
       if (progressData.length > 0) {
-        
+
         if (progressData[0].insights) {
           const insights = progressData[0].insights as any
-          
+
           // Handle insights - it might be an object or need parsing
           let parsedInsights = insights
           if (typeof insights === 'string') {
@@ -184,17 +184,17 @@ export async function GET(
               parsedInsights = {}
             }
           }
-          
+
           // Extract subscale scores from insights.score
           // The insights.score key contains all subscale scores as an object
           if (parsedInsights && parsedInsights.score) {
             const scoreDataFromInsights = parsedInsights.score
-            
+
             // Handle if score is an object containing subscale scores
             if (typeof scoreDataFromInsights === 'object' && scoreDataFromInsights !== null && !Array.isArray(scoreDataFromInsights)) {
               // Extract subscale_scores from insights.score
               scoreData.subscale_scores = {}
-              
+
               // Copy all numeric values from insights.score as subscale scores
               for (const [key, value] of Object.entries(scoreDataFromInsights)) {
                 if (typeof value === 'number') {
@@ -206,7 +206,7 @@ export async function GET(
                   }
                 }
               }
-              
+
               // Calculate overall score as average of all subscale scores
               if (Object.keys(scoreData.subscale_scores).length > 0) {
                 const scores = Object.values(scoreData.subscale_scores)
@@ -226,11 +226,11 @@ export async function GET(
               }
             }
           }
-          
+
           // Also check for direct subscale_scores key (fallback)
           if (!scoreData.subscale_scores && parsedInsights && parsedInsights.subscale_scores && typeof parsedInsights.subscale_scores === 'object') {
             scoreData.subscale_scores = parsedInsights.subscale_scores
-            
+
             // Calculate overall score if not already set
             if (!scoreData.score && scoreData.subscale_scores && Object.keys(scoreData.subscale_scores).length > 0) {
               const scores = Object.values(scoreData.subscale_scores)
@@ -260,10 +260,10 @@ export async function GET(
 
       if (!postCareerMaturityData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No post-career maturity data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -299,12 +299,12 @@ export async function GET(
       }
 
       let scoreData: { score?: number; subscale_scores?: Record<string, number> } = {}
-      
+
       if (progressData.length > 0) {
-        
+
         if (progressData[0].insights) {
           const insights = progressData[0].insights as any
-          
+
           // Handle insights - it might be an object or need parsing
           let parsedInsights = insights
           if (typeof insights === 'string') {
@@ -315,17 +315,17 @@ export async function GET(
               parsedInsights = {}
             }
           }
-          
+
           // Extract subscale scores from insights.score
           // The insights.score key contains all subscale scores as an object
           if (parsedInsights && parsedInsights.score) {
             const scoreDataFromInsights = parsedInsights.score
-            
+
             // Handle if score is an object containing subscale scores
             if (typeof scoreDataFromInsights === 'object' && scoreDataFromInsights !== null && !Array.isArray(scoreDataFromInsights)) {
               // Extract subscale_scores from insights.score
               scoreData.subscale_scores = {}
-              
+
               // Copy all numeric values from insights.score as subscale scores
               for (const [key, value] of Object.entries(scoreDataFromInsights)) {
                 if (typeof value === 'number') {
@@ -337,7 +337,7 @@ export async function GET(
                   }
                 }
               }
-              
+
               // Calculate overall score as average of all subscale scores
               if (Object.keys(scoreData.subscale_scores).length > 0) {
                 const scores = Object.values(scoreData.subscale_scores)
@@ -357,11 +357,11 @@ export async function GET(
               }
             }
           }
-          
+
           // Also check for direct subscale_scores key (fallback)
           if (!scoreData.subscale_scores && parsedInsights && parsedInsights.subscale_scores && typeof parsedInsights.subscale_scores === 'object') {
             scoreData.subscale_scores = parsedInsights.subscale_scores
-            
+
             // Calculate overall score if not already set
             if (!scoreData.score && scoreData.subscale_scores && Object.keys(scoreData.subscale_scores).length > 0) {
               const scores = Object.values(scoreData.subscale_scores)
@@ -391,10 +391,10 @@ export async function GET(
 
       if (!psychologicalWellbeingData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No psychological wellbeing data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -416,10 +416,10 @@ export async function GET(
 
       if (!postPsychologicalWellbeingData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No post-psychological wellbeing data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -441,10 +441,10 @@ export async function GET(
 
       if (!preCoachingStrengthDifficultyData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No pre-coaching strength difficulty data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -466,10 +466,10 @@ export async function GET(
 
       if (!postCoachingStrengthDifficultyData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No post-coaching strength difficulty data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -491,10 +491,10 @@ export async function GET(
 
       if (!riasecTestData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No RIASEC test data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -516,10 +516,10 @@ export async function GET(
 
       if (!personalityTestData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No personality test data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -528,7 +528,7 @@ export async function GET(
       // Debug: Log the data structure
       console.log('Personality Test Data from DB:', personalityTestData[0])
       console.log('Answers field:', personalityTestData[0].answers)
-      
+
       try {
         const parsedAnswers = JSON.parse(personalityTestData[0].answers)
         console.log('Parsed answers:', parsedAnswers)
@@ -553,10 +553,10 @@ export async function GET(
 
       if (!careerStoryOneData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No career story one data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -578,10 +578,10 @@ export async function GET(
 
       if (!careerStoryTwoData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No career story two data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -603,10 +603,10 @@ export async function GET(
 
       if (!careerStoryThreeData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No career story three data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -628,10 +628,10 @@ export async function GET(
 
       if (!careerStoryFourData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No career story four data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -653,10 +653,10 @@ export async function GET(
 
       if (!letterFromFutureSelfData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No letter from future self data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -678,10 +678,10 @@ export async function GET(
 
       if (!myLifeCollageData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No my life collage data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -703,10 +703,10 @@ export async function GET(
 
       if (!careerStoryFiveData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No career story five data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -728,10 +728,10 @@ export async function GET(
 
       if (!careerStorySixData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No career story six data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -745,18 +745,39 @@ export async function GET(
 
     // Handle session-report form
     if (formId === 'session-report') {
+      const { searchParams } = new URL(request.url)
+      const sessionIdParam = searchParams.get('sessionId')
+
+      if (!sessionIdParam) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'sessionId is required',
+            data: null
+          },
+          { status: 400 }
+        )
+      }
+
+      const sessionId = parseInt(sessionIdParam)
+
       const sessionReportData = await db
         .select()
         .from(report)
-        .where(eq(report.user_id, userId))
+        .where(
+          and(
+            eq(report.user_id, userId),
+            eq(report.session_id, sessionId)
+          )
+        )
         .limit(1)
 
       if (!sessionReportData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No session report data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -772,13 +793,13 @@ export async function GET(
     if (formId === 'schedule-call') {
       const { searchParams } = new URL(request.url)
       const sessionIdParam = searchParams.get('sessionId')
-      
+
       if (!sessionIdParam) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'sessionId is required',
-            data: null 
+            data: null
           },
           { status: 400 }
         )
@@ -821,13 +842,13 @@ export async function GET(
     if (formId === 'career-options-matrix') {
       const { searchParams } = new URL(request.url)
       const sessionIdParam = searchParams.get('sessionId')
-      
+
       if (!sessionIdParam) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'sessionId is required',
-            data: null 
+            data: null
           },
           { status: 400 }
         )
@@ -848,10 +869,10 @@ export async function GET(
 
       if (!careerOptionsMatrixData.length) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'No career options matrix data found for this client',
-            data: null 
+            data: null
           },
           { status: 404 }
         )
@@ -865,10 +886,10 @@ export async function GET(
 
     // Handle other form types in the future
     return NextResponse.json(
-      { 
-        success: false, 
+      {
+        success: false,
         error: `Form type '${formId}' not supported yet`,
-        data: null 
+        data: null
       },
       { status: 400 }
     )
@@ -876,10 +897,10 @@ export async function GET(
   } catch (error) {
     console.error('Error fetching session details:', error)
     return NextResponse.json(
-      { 
-        success: false, 
+      {
+        success: false,
         error: 'Failed to fetch session details',
-        data: null 
+        data: null
       },
       { status: 500 }
     )
@@ -909,8 +930,8 @@ export async function POST(
 
       if (sessionId === null || sessionId === undefined) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'sessionId is required',
           },
           { status: 400 }
@@ -919,8 +940,8 @@ export async function POST(
 
       if (!summary || summary.trim() === '') {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: 'Summary cannot be empty',
           },
           { status: 400 }
@@ -1025,11 +1046,11 @@ export async function POST(
         const completedSessions: number[] =
           (jp.completedSessions as number[]) ?? []
         const isNewSession = !completedSessions.includes(sessionId)
-        
+
         if (isNewSession) {
           completedSessions.push(sessionId)
         }
-        
+
         // Calculate the new total score
         // Each completed session is worth 100 points (only add if it's a new session)
         const newTotalScore = isNewSession
@@ -1059,8 +1080,8 @@ export async function POST(
 
     // Handle other form types
     return NextResponse.json(
-      { 
-        success: false, 
+      {
+        success: false,
         error: `Form type '${formId}' not supported for POST`,
       },
       { status: 400 }
@@ -1069,8 +1090,8 @@ export async function POST(
   } catch (error) {
     console.error('Error publishing schedule call data:', error)
     return NextResponse.json(
-      { 
-        success: false, 
+      {
+        success: false,
         error: 'Failed to publish schedule call data',
       },
       { status: 500 }
