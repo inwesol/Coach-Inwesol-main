@@ -36,6 +36,39 @@ interface PostPsychologicalWellbeingDetailsDialogProps {
   sessionId: number
 }
 
+const subscaleMetadata: Record<string, { name: string; description: string }> = {
+  autonomy: {
+    name: 'Autonomy',
+    description:
+      'Self-determination and independence; ability to resist social pressure and regulate behavior from within.'
+  },
+  environmentalMastery: {
+    name: 'Environmental Mastery',
+    description:
+      'Sense of competence in managing everyday life, activities, and surrounding circumstances.'
+  },
+  personalGrowth: {
+    name: 'Personal Growth',
+    description:
+      'Openness to new experiences and sense of continued development and potential.'
+  },
+  positiveRelations: {
+    name: 'Positive Relations',
+    description:
+      'Warm, trusting relationships with others; capacity for empathy, affection, and intimacy.'
+  },
+  purposeInLife: {
+    name: 'Purpose in Life',
+    description:
+      'Having goals and a sense of direction; feeling that life has meaning.'
+  },
+  selfAcceptance: {
+    name: 'Self-Acceptance',
+    description:
+      'Positive attitude toward oneself; acceptance of multiple aspects of self, including past life.'
+  }
+}
+
 const PostPsychologicalWellbeingDetailsDialog: React.FC<
   PostPsychologicalWellbeingDetailsDialogProps
 > = ({ open, onOpenChange, clientId, sessionId }) => {
@@ -140,6 +173,16 @@ const PostPsychologicalWellbeingDetailsDialog: React.FC<
       .split(' ')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ')
+  }
+
+  const normalizeSubscaleKey = (key: string) =>
+    key.replace(/_/g, '').replace(/\s+/g, '').toLowerCase()
+
+  const getSubscaleMetadata = (key: string) => {
+    const normalizedInput = normalizeSubscaleKey(key)
+    return Object.entries(subscaleMetadata).find(
+      ([metadataKey]) => normalizeSubscaleKey(metadataKey) === normalizedInput
+    )?.[1]
   }
 
   const getCompletionStatus = () => {
@@ -253,29 +296,34 @@ const PostPsychologicalWellbeingDetailsDialog: React.FC<
                     <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                       {Object.entries(
                         postPsychologicalWellbeingData.subscale_scores
-                      ).map(([key, value]) => (
-                        <div
-                          key={key}
-                          className='rounded-lg border bg-gray-50 p-4'
-                        >
-                          <div className='flex items-center justify-between'>
-                            <div className='flex-1'>
-                              <h4 className='font-medium text-gray-900'>
-                                {formatKeyName(key)}
-                              </h4>
-                              <p className='mt-1 text-xs text-muted-foreground'>
-                                This is a dummy description for the subscale score. It provides additional context about the measurement.
-                              </p>
-                            </div>
-                            <div className='mx-4 h-12 w-px bg-gray-300'></div>
-                            <div className='text-right'>
-                              <div className='text-xl font-semibold text-blue-600'>
-                                {Math.round(value)}%
+                      ).map(([key, value]) => {
+                        const metadata = getSubscaleMetadata(key)
+
+                        return (
+                          <div
+                            key={key}
+                            className='rounded-lg border bg-gray-50 p-4'
+                          >
+                            <div className='flex items-center justify-between'>
+                              <div className='flex-1'>
+                                <h4 className='font-medium text-gray-900'>
+                                  {metadata?.name || formatKeyName(key)}
+                                </h4>
+                                <p className='mt-1 text-xs text-muted-foreground'>
+                                  {metadata?.description ||
+                                    'No description available for this subscale.'}
+                                </p>
+                              </div>
+                              <div className='mx-4 h-12 w-px bg-gray-300'></div>
+                              <div className='text-right'>
+                                <div className='text-xl font-semibold text-blue-600'>
+                                  {Math.round(value)}%
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        )
+                      })}
                     </div>
                   </CardContent>
                 </Card>

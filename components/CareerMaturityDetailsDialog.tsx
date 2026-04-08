@@ -36,6 +36,29 @@ interface CareerMaturityDetailsDialogProps {
   sessionId: number
 }
 
+const subscaleMetadata: Record<string, { name: string; description: string }> = {
+  Concern: {
+    name: 'Concern',
+    description:
+      'Degree of involvement and care about career decision-making versus apathy or indifference about the future.'
+  },
+  Curiosity: {
+    name: 'Curiosity',
+    description:
+      'Interest in exploring the world of work and understanding oneself in relation to career options.'
+  },
+  Confidence: {
+    name: 'Confidence',
+    description:
+      "Belief in one's ability to make career decisions and solve career-related problems."
+  },
+  Consultation: {
+    name: 'Consultation',
+    description:
+      'Willingness to seek and use advice from others in career choices while maintaining independence.'
+  }
+}
+
 const CareerMaturityDetailsDialog: React.FC<
   CareerMaturityDetailsDialogProps
 > = ({ open, onOpenChange, clientId, sessionId }) => {
@@ -338,29 +361,34 @@ const CareerMaturityDetailsDialog: React.FC<
                   <CardContent>
                     <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                       {Object.entries(careerMaturityData.subscale_scores).map(
-                        ([key, value]) => (
-                          <div
-                            key={key}
-                            className='rounded-lg border bg-gray-50 p-4'
-                          >
-                            <div className='flex items-center justify-between'>
-                              <div className='flex-1'>
-                                <h4 className='font-medium text-gray-900'>
-                                  {formatKeyName(key)}
-                                </h4>
-                                <p className='mt-1 text-xs text-muted-foreground'>
-                                  This is a dummy description for the subscale score. It provides additional context about the measurement.
-                                </p>
-                              </div>
-                              <div className='mx-4 h-12 w-px bg-gray-300'></div>
-                              <div className='text-right'>
-                                <div className='text-xl font-semibold text-blue-600'>
-                                  {Math.round(value)}%
+                        ([key, value]) => {
+                          const metadata = subscaleMetadata[key]
+
+                          return (
+                            <div
+                              key={key}
+                              className='rounded-lg border bg-gray-50 p-4'
+                            >
+                              <div className='flex items-center justify-between'>
+                                <div className='flex-1'>
+                                  <h4 className='font-medium text-gray-900'>
+                                    {metadata?.name || formatKeyName(key)}
+                                  </h4>
+                                  <p className='mt-1 text-xs text-muted-foreground'>
+                                    {metadata?.description ||
+                                      'No description available for this subscale.'}
+                                  </p>
+                                </div>
+                                <div className='mx-4 h-12 w-px bg-gray-300'></div>
+                                <div className='text-right'>
+                                  <div className='text-xl font-semibold text-blue-600'>
+                                    {Math.round(value)}%
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        )
+                          )
+                        }
                       )}
                     </div>
                   </CardContent>

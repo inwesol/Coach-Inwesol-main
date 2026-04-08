@@ -98,6 +98,24 @@ const PreAssessmentDetailsDialog: React.FC<PreAssessmentDetailsDialogProps> = ({
 
   const getQuestionNumber = (index: number) => `Q${index + 1}`
 
+  const getDisplayScore = (index: number, answer: unknown) => {
+    const numericAnswer =
+      typeof answer === 'number'
+        ? answer
+        : typeof answer === 'string'
+          ? Number(answer)
+          : NaN
+
+    if (Number.isNaN(numericAnswer)) return answer
+
+    // Q4 is reverse-scored on a 1-10 scale.
+    if (index === 3) {
+      return 10 - numericAnswer
+    }
+
+    return numericAnswer
+  }
+
   const getCompletionStatus = () => {
     if (!preAssessmentData) return 'Unknown'
     const answers = parseAnswers(preAssessmentData.answers)
@@ -185,6 +203,7 @@ const PreAssessmentDetailsDialog: React.FC<PreAssessmentDetailsDialogProps> = ({
                         {questions.map((question, index) => {
                           const questionKey = `q${index + 1}`
                           const answer = answers[questionKey]
+                          const displayScore = getDisplayScore(index, answer)
 
                           return (
                             <div
@@ -203,7 +222,7 @@ const PreAssessmentDetailsDialog: React.FC<PreAssessmentDetailsDialogProps> = ({
                                 <div className='text-right'>
                                   <div className='text-lg font-semibold text-blue-600'>
                                     {answer !== undefined && answer !== null
-                                      ? `${answer}/10`
+                                      ? `${displayScore}/10`
                                       : 'No response'}
                                   </div>
                                 </div>

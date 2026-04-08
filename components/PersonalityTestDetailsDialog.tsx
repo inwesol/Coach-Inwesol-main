@@ -36,6 +36,34 @@ interface PersonalityTestDetailsDialogProps {
   sessionId: number
 }
 
+const subscaleMetadata: Record<string, { name: string; description: string }> = {
+  extraversion: {
+    name: 'Extraversion',
+    description:
+      'The tendency to be outgoing, energetic, and seek social interaction and stimulation.'
+  },
+  agreeableness: {
+    name: 'Agreeableness',
+    description:
+      'The inclination to be cooperative, compassionate, and prioritize harmony in relationships.'
+  },
+  conscientiousness: {
+    name: 'Conscientiousness',
+    description:
+      'The degree to which someone is organized, disciplined, and goal-oriented in their behavior.'
+  },
+  neuroticism: {
+    name: 'Neuroticism',
+    description:
+      'The tendency to experience negative emotions like anxiety, worry, and emotional instability.'
+  },
+  openness: {
+    name: 'Openness',
+    description:
+      'The extent to which someone is curious, imaginative, and receptive to new experiences and ideas.'
+  }
+}
+
 const PersonalityTestDetailsDialog: React.FC<
   PersonalityTestDetailsDialogProps
 > = ({ open, onOpenChange, clientId, sessionId }) => {
@@ -237,29 +265,35 @@ const PersonalityTestDetailsDialog: React.FC<
                   <CardContent>
                     <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                       {Object.entries(personalityTestData.subscale_scores).map(
-                        ([key, value]) => (
-                          <div
-                            key={key}
-                            className='rounded-lg border bg-gray-50 p-4'
-                          >
-                            <div className='flex items-center justify-between'>
-                              <div className='flex-1'>
-                                <h4 className='font-medium capitalize text-gray-900'>
-                                  {key.replace(/_/g, ' ')}
-                                </h4>
-                                <p className='mt-1 text-xs text-muted-foreground'>
-                                  This is a dummy description for the subscale score. It provides additional context about the measurement.
-                                </p>
-                              </div>
-                              <div className='mx-4 h-12 w-px bg-gray-300'></div>
-                              <div className='text-right'>
-                                <div className='text-xl font-semibold text-blue-600'>
-                                  {Math.round(value)}%
+                        ([key, value]) => {
+                          const metadata = subscaleMetadata[key]
+                          const fallbackName = key.replace(/_/g, ' ')
+
+                          return (
+                            <div
+                              key={key}
+                              className='rounded-lg border bg-gray-50 p-4'
+                            >
+                              <div className='flex items-center justify-between'>
+                                <div className='flex-1'>
+                                  <h4 className='font-medium capitalize text-gray-900'>
+                                    {metadata?.name || fallbackName}
+                                  </h4>
+                                  <p className='mt-1 text-xs text-muted-foreground'>
+                                    {metadata?.description ||
+                                      'No description available for this subscale.'}
+                                  </p>
+                                </div>
+                                <div className='mx-4 h-12 w-px bg-gray-300'></div>
+                                <div className='text-right'>
+                                  <div className='text-xl font-semibold text-blue-600'>
+                                    {Math.round(value)}%
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        )
+                          )
+                        }
                       )}
                     </div>
                   </CardContent>

@@ -37,6 +37,33 @@ interface PreCoachingStrengthDifficultyDetailsDialogProps {
   sessionId: number
 }
 
+const subscaleMetadata: Record<string, { name: string; description: string }> = {
+  emotionalSymptoms: {
+    name: 'Emotional Symptoms',
+    description: 'Anxiety, depression, somatic complaints, and emotional distress.'
+  },
+  conductProblems: {
+    name: 'Conduct Problems',
+    description:
+      'Behavioral problems such as lying, stealing, fighting, and temper.'
+  },
+  hyperactivityInattention: {
+    name: 'Hyperactivity/Inattention',
+    description:
+      'Restlessness, concentration difficulties, and impulsive behavior.'
+  },
+  peerProblems: {
+    name: 'Peer Problems',
+    description:
+      'Difficulties in getting along with other young people and being liked.'
+  },
+  prosocialBehavior: {
+    name: 'Prosocial Behavior',
+    description:
+      'Considerate behavior, sharing, and helping others; strengths in relationships.'
+  }
+}
+
 const PreCoachingStrengthDifficultyDetailsDialog: React.FC<
   PreCoachingStrengthDifficultyDetailsDialogProps
 > = ({ open, onOpenChange, clientId, sessionId }) => {
@@ -246,6 +273,16 @@ const PreCoachingStrengthDifficultyDetailsDialog: React.FC<
       .join(' ')
   }
 
+  const normalizeSubscaleKey = (key: string) =>
+    key.replace(/_/g, '').replace(/\s+/g, '').toLowerCase()
+
+  const getSubscaleMetadata = (key: string) => {
+    const normalizedInput = normalizeSubscaleKey(key)
+    return Object.entries(subscaleMetadata).find(
+      ([metadataKey]) => normalizeSubscaleKey(metadataKey) === normalizedInput
+    )?.[1]
+  }
+
   const getCategoryColor = (category: string) => {
     switch (category) {
       case 'prosocial':
@@ -377,29 +414,34 @@ const PreCoachingStrengthDifficultyDetailsDialog: React.FC<
                     <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                       {Object.entries(
                         preCoachingStrengthDifficultyData.subscaleScores
-                      ).map(([key, value]) => (
-                        <div
-                          key={key}
-                          className='rounded-lg border bg-gray-50 p-4'
-                        >
-                          <div className='flex items-center justify-between'>
-                            <div className='flex-1'>
-                              <h4 className='font-medium text-gray-900'>
-                                {formatKeyName(key)}
-                              </h4>
-                              <p className='mt-1 text-xs text-muted-foreground'>
-                                This is a dummy description for the subscale score. It provides additional context about the measurement.
-                              </p>
-                            </div>
-                            <div className='mx-4 h-12 w-px bg-gray-300'></div>
-                            <div className='text-right'>
-                              <div className='text-xl font-semibold text-blue-600'>
-                                {Math.round(value)}%
+                      ).map(([key, value]) => {
+                        const metadata = getSubscaleMetadata(key)
+
+                        return (
+                          <div
+                            key={key}
+                            className='rounded-lg border bg-gray-50 p-4'
+                          >
+                            <div className='flex items-center justify-between'>
+                              <div className='flex-1'>
+                                <h4 className='font-medium text-gray-900'>
+                                  {metadata?.name || formatKeyName(key)}
+                                </h4>
+                                <p className='mt-1 text-xs text-muted-foreground'>
+                                  {metadata?.description ||
+                                    'No description available for this subscale.'}
+                                </p>
+                              </div>
+                              <div className='mx-4 h-12 w-px bg-gray-300'></div>
+                              <div className='text-right'>
+                                <div className='text-xl font-semibold text-blue-600'>
+                                  {Math.round(value)}%
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        )
+                      })}
                     </div>
                   </CardContent>
                 </Card>

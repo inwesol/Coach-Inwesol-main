@@ -88,42 +88,42 @@ const RiasecTestDetailsDialog: React.FC<RiasecTestDetailsDialogProps> = ({
     {
       code: 'R',
       name: 'Realistic',
-      description: 'Practical, hands-on, mechanical',
+      description: 'Hands-on, practical work with tools, machines, or nature',
       icon: Wrench,
       color: 'bg-blue-100 text-blue-800'
     },
     {
       code: 'I',
       name: 'Investigative',
-      description: 'Analytical, scientific, intellectual',
+      description: 'Scientific, analytical, and research-oriented work',
       icon: Brain,
       color: 'bg-green-100 text-green-800'
     },
     {
       code: 'A',
       name: 'Artistic',
-      description: 'Creative, expressive, original',
+      description: 'Creative, expressive, and aesthetic work',
       icon: Palette,
       color: 'bg-purple-100 text-purple-800'
     },
     {
       code: 'S',
       name: 'Social',
-      description: 'Helpful, caring, supportive',
+      description: 'Helping, teaching, and working with people',
       icon: Heart,
       color: 'bg-pink-100 text-pink-800'
     },
     {
       code: 'E',
       name: 'Enterprising',
-      description: 'Leadership, persuasive, ambitious',
+      description: 'Leadership, persuasion, and business-oriented work',
       icon: Briefcase,
       color: 'bg-orange-100 text-orange-800'
     },
     {
       code: 'C',
       name: 'Conventional',
-      description: 'Organized, detail-oriented, systematic',
+      description: 'Organized, detail-oriented, and systematic work',
       icon: Target,
       color: 'bg-yellow-100 text-yellow-800'
     }
@@ -141,6 +141,27 @@ const RiasecTestDetailsDialog: React.FC<RiasecTestDetailsDialogProps> = ({
       .join(' ')
   }
 
+  const normalizeCategoryCode = (input: string) => {
+    const normalized = input.trim().toLowerCase()
+
+    const aliasToCode: Record<string, string> = {
+      r: 'R',
+      realistic: 'R',
+      i: 'I',
+      investigative: 'I',
+      a: 'A',
+      artistic: 'A',
+      s: 'S',
+      social: 'S',
+      e: 'E',
+      enterprising: 'E',
+      c: 'C',
+      conventional: 'C'
+    }
+
+    return aliasToCode[normalized] || input.toUpperCase()
+  }
+
   const getCompletionStatus = () => {
     if (!riasecTestData) return 'Unknown'
     if (riasecTestData.selected_answers && riasecTestData.interest_code) {
@@ -153,7 +174,7 @@ const RiasecTestDetailsDialog: React.FC<RiasecTestDetailsDialogProps> = ({
     switch (status.toLowerCase()) {
       case 'completed':
         return (
-          <Badge className='bg-green-100 text-green-700 hover:green-800 hover:bg-green-200'>
+          <Badge className='hover:green-800 bg-green-100 text-green-700 hover:bg-green-200'>
             <CheckCircle className='mr-1 h-3 w-3' />
             Completed
           </Badge>
@@ -171,17 +192,20 @@ const RiasecTestDetailsDialog: React.FC<RiasecTestDetailsDialogProps> = ({
   }
 
   const getCategoryIcon = (code: string) => {
-    const category = riasecCategories.find(cat => cat.code === code)
+    const normalizedCode = normalizeCategoryCode(code)
+    const category = riasecCategories.find(cat => cat.code === normalizedCode)
     return category ? category.icon : User
   }
 
   const getCategoryColor = (code: string) => {
-    const category = riasecCategories.find(cat => cat.code === code)
+    const normalizedCode = normalizeCategoryCode(code)
+    const category = riasecCategories.find(cat => cat.code === normalizedCode)
     return category ? category.color : 'bg-gray-100 text-gray-800'
   }
 
   const getCategoryDescription = (code: string) => {
-    const category = riasecCategories.find(cat => cat.code === code)
+    const normalizedCode = normalizeCategoryCode(code)
+    const category = riasecCategories.find(cat => cat.code === normalizedCode)
     return category ? category.description : 'Unknown category'
   }
 
@@ -247,15 +271,15 @@ const RiasecTestDetailsDialog: React.FC<RiasecTestDetailsDialogProps> = ({
                     <label className='text-sm font-medium text-muted-foreground'>
                       Session ID:
                     </label>
-                    <p className='text-sm font-medium'>{riasecTestData.session_id}</p>
+                    <p className='text-sm font-medium'>
+                      {riasecTestData.session_id}
+                    </p>
                   </div>
                   <div className='flex items-center gap-2'>
                     <label className='text-sm font-medium text-muted-foreground'>
                       Status:
                     </label>
-                    <div>
-                      {getCompletionBadge(getCompletionStatus())}
-                    </div>
+                    <div>{getCompletionBadge(getCompletionStatus())}</div>
                   </div>
                   <div className='flex items-center gap-2'>
                     <label className='text-sm font-medium text-muted-foreground'>
@@ -283,11 +307,14 @@ const RiasecTestDetailsDialog: React.FC<RiasecTestDetailsDialogProps> = ({
                     <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                       {Object.entries(riasecTestData.category_counts).map(
                         ([key, value]) => {
+                          const normalizedCode = normalizeCategoryCode(key)
                           const category = riasecCategories.find(
-                            cat => cat.code === key
+                            cat => cat.code === normalizedCode
                           )
-                          const categoryName = category?.name || formatKeyName(key)
-                          const categoryDescription = category?.description || ''
+                          const categoryName =
+                            category?.name || formatKeyName(key)
+                          const categoryDescription =
+                            category?.description || getCategoryDescription(key)
 
                           return (
                             <div
@@ -300,7 +327,7 @@ const RiasecTestDetailsDialog: React.FC<RiasecTestDetailsDialogProps> = ({
                                     {categoryName}
                                   </h4>
                                   <p className='mt-1 text-xs text-muted-foreground'>
-                                    This is a dummy description for the subscale score. It provides additional context about the measurement.
+                                    {categoryDescription}
                                   </p>
                                 </div>
                                 <div className='mx-4 h-12 w-px bg-gray-300'></div>
