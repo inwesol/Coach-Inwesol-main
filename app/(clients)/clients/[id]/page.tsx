@@ -290,47 +290,47 @@ const ClientSessionsPage = () => {
   const sessionGuides = [
     {
       id: '0',
-      title: 'Session 0',
+      title: 'Session 1',
       path: '/pdfs/session-wise-guide/Session 0.pdf'
     },
     {
       id: '1',
-      title: 'Session 1',
+      title: 'Session 2',
       path: '/pdfs/session-wise-guide/Session 1.pdf'
     },
     {
       id: '2',
-      title: 'Session 2',
+      title: 'Session 3',
       path: '/pdfs/session-wise-guide/Session 2.pdf'
     },
     {
       id: '3',
-      title: 'Session 3',
+      title: 'Session 4',
       path: '/pdfs/session-wise-guide/Session 3.pdf'
     },
     {
       id: '4',
-      title: 'Session 4',
+      title: 'Session 5',
       path: '/pdfs/session-wise-guide/Session 4.pdf'
     },
     {
       id: '5',
-      title: 'Session 5',
+      title: 'Session 6',
       path: '/pdfs/session-wise-guide/Session 5.pdf'
     },
     {
       id: '6',
-      title: 'Session 6',
+      title: 'Session 7',
       path: '/pdfs/session-wise-guide/Session 6.pdf'
     },
     {
       id: '7',
-      title: 'Session 7',
+      title: 'Session 8',
       path: '/pdfs/session-wise-guide/Session 7.pdf'
     },
     {
       id: '8',
-      title: 'Session 8',
+      title: 'Session 9',
       path: '/pdfs/session-wise-guide/Session 8.pdf'
     },
     {

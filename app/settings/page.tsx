@@ -50,13 +50,13 @@ const PasswordInput = ({
   placeholder
 }: PasswordInputProps) => (
   <div className='space-y-3'>
-    <label className='block text-sm font-semibold text-gray-800'>{label}</label>
+    <label className='block text-sm font-semibold text-foreground'>{label}</label>
     <div className='relative'>
       <input
         type={show ? 'text' : 'password'}
         value={value}
         onChange={e => onChange(e.target.value)}
-        className='w-full rounded-xl border border-gray-300 bg-white px-5 py-4 pr-14 text-gray-900 placeholder-gray-500 shadow-sm transition-all duration-200 focus:border-[#00B24B] focus:outline-none focus:ring-2 focus:ring-[#00B24B] focus:ring-opacity-20'
+        className='w-full rounded-xl border border-input bg-background px-5 py-4 pr-14 text-foreground placeholder:text-muted-foreground shadow-sm transition-all duration-200 focus:border-[#00B24B] focus:outline-none focus:ring-2 focus:ring-[#00B24B]/30'
         placeholder={placeholder}
         autoComplete='new-password'
         spellCheck={false}
@@ -64,7 +64,7 @@ const PasswordInput = ({
       <button
         type='button'
         onClick={onToggle}
-        className='absolute right-4 top-1/2 -translate-y-1/2 transform p-1 text-gray-500 transition-colors duration-200 hover:text-[#00B24B]'
+        className='absolute right-4 top-1/2 -translate-y-1/2 transform p-1 text-muted-foreground transition-colors duration-200 hover:text-[#00B24B]'
         aria-label={show ? 'Hide password' : 'Show password'}
       >
         {show ? <EyeOff size={22} /> : <Eye size={22} />}
@@ -240,19 +240,19 @@ export default function SettingsPage() {
   }, [validatePasswords, user, passwords, getToken])
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 p-6'>
-      <div className='min-h-[95vh] w-full overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl'>
+    <div className='min-h-screen bg-background p-6'>
+      <div className='min-h-[95vh] w-full overflow-hidden rounded-2xl border border-border bg-card shadow-xl'>
         <div className='flex min-h-full flex-col justify-center p-12'>
           <div className='mx-auto w-full max-w-2xl'>
             {/* Header */}
             <div className='mb-10 text-center'>
-              <div className='mb-6 inline-flex h-16 w-16 items-center justify-center rounded-xl bg-[#00B24B] bg-opacity-10'>
+              <div className='mb-6 inline-flex h-16 w-16 items-center justify-center rounded-xl bg-[#00B24B]/10'>
                 <Lock className='h-8 w-8 text-[#00B24B]' />
               </div>
-              <h1 className='mb-3 text-3xl font-bold text-gray-900'>
+              <h1 className='mb-3 text-3xl font-bold text-card-foreground'>
                 Change Password
               </h1>
-              <p className='text-lg text-gray-600'>
+              <p className='text-lg text-muted-foreground'>
                 Update your credentials to maintain account security
               </p>
             </div>
@@ -287,22 +287,22 @@ export default function SettingsPage() {
               />
 
               {/* Password Requirements */}
-              <div className='rounded-xl border border-blue-200 bg-blue-50 p-6'>
-                <h4 className='mb-3 flex items-center gap-2 font-semibold text-blue-900'>
+              <div className='rounded-xl border border-border bg-muted/40 p-6'>
+                <h4 className='mb-3 flex items-center gap-2 font-semibold text-foreground'>
                   <Shield className='h-5 w-5' />
                   Password Requirements
                 </h4>
-                <ul className='space-y-2 text-sm text-blue-800'>
+                <ul className='space-y-2 text-sm text-muted-foreground'>
                   <li className='flex items-center gap-2'>
-                    <div className='h-1.5 w-1.5 rounded-full bg-blue-600'></div>
+                    <div className='h-1.5 w-1.5 rounded-full bg-primary'></div>
                     At least 8 characters long
                   </li>
                   <li className='flex items-center gap-2'>
-                    <div className='h-1.5 w-1.5 rounded-full bg-blue-600'></div>
+                    <div className='h-1.5 w-1.5 rounded-full bg-primary'></div>
                     Different from your current password
                   </li>
                   <li className='flex items-center gap-2'>
-                    <div className='h-1.5 w-1.5 rounded-full bg-blue-600'></div>
+                    <div className='h-1.5 w-1.5 rounded-full bg-primary'></div>
                     Both new password fields must match
                   </li>
                 </ul>
@@ -332,7 +332,7 @@ export default function SettingsPage() {
               <button
                 onClick={handleSubmit}
                 disabled={isLoading}
-                className='flex w-full transform items-center justify-center gap-3 rounded-xl bg-[#00B24B] px-6 py-4 font-semibold text-white shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#009640] hover:shadow-xl disabled:transform-none disabled:cursor-not-allowed disabled:bg-gray-400 disabled:shadow-lg'
+                className='flex w-full transform items-center justify-center gap-3 rounded-xl bg-[#00B24B] px-6 py-4 font-semibold text-white shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#009640] hover:shadow-xl disabled:transform-none disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:shadow-lg'
               >
                 <Lock className='h-5 w-5' />
                 {isLoading ? (

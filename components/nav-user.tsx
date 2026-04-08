@@ -20,7 +20,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { ChevronsUpDown, LogOut, Settings, User } from "lucide-react"
+import { ChevronsUpDown, LogOut, Settings } from "lucide-react"
+import { ThemeToggleMenuItem } from '@/components/theme-toggle-menu-item'
 
 export function NavUser() {
   const { user } = useUser()
@@ -86,6 +87,7 @@ export function NavUser() {
               <Settings className="mr-2 h-4 w-4" />
               <span>Settings</span>
             </DropdownMenuItem>
+            <ThemeToggleMenuItem />
             <DropdownMenuSeparator />
             <SignOutButton redirectUrl="/sign-in">
               <DropdownMenuItem className="text-red-600 cursor-pointer">
