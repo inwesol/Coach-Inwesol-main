@@ -112,7 +112,7 @@ const CareerStoryFiveDetailsDialog: React.FC<
           </Badge>
         )
       default:
-        return <Badge className='bg-gray-100 text-gray-800'>{status}</Badge>
+        return <Badge className='bg-muted text-foreground'>{status}</Badge>
     }
   }
 
@@ -135,21 +135,21 @@ const CareerStoryFiveDetailsDialog: React.FC<
             {storyboard.cells.map((cell, cellIndex) => (
               <div
                 key={cell.id}
-                className='min-h-[80px] rounded-lg border bg-gray-50 p-3'
+                className='min-h-[80px] rounded-lg border bg-muted/40 p-3'
               >
                 <div className='space-y-2'>
                   <div className='flex items-center justify-between'>
-                    <span className='text-xs font-medium text-gray-500'>
+                    <span className='text-xs font-medium text-muted-foreground'>
                       Cell {cellIndex + 1}
                     </span>
                   </div>
-                  <div className='text-sm text-gray-700'>
+                  <div className='text-sm text-muted-foreground'>
                     {cell.content ? (
                       <p className='whitespace-pre-wrap leading-relaxed'>
                         {cell.content}
                       </p>
                     ) : (
-                      <p className='italic text-gray-400'>Empty</p>
+                      <p className='italic text-muted-foreground'>Empty</p>
                     )}
                   </div>
                 </div>
@@ -201,9 +201,9 @@ const CareerStoryFiveDetailsDialog: React.FC<
 
             {/* Storyboards List */}
             {careerStoryFiveData.storyboards.length === 0 ? (
-              <div className='rounded-lg border border-dashed border-gray-300 bg-gray-50 p-8 text-center'>
-                <Grid3X3 className='mx-auto mb-2 h-8 w-8 text-gray-400' />
-                <p className='text-sm text-gray-500'>No storyboards created</p>
+              <div className='rounded-lg border border-dashed border-border bg-muted/40 p-8 text-center'>
+                <Grid3X3 className='mx-auto mb-2 h-8 w-8 text-muted-foreground' />
+                <p className='text-sm text-muted-foreground'>No storyboards created</p>
               </div>
             ) : (
               <div className='space-y-6'>

@@ -103,7 +103,7 @@ const DemographicsDetailsDialog: React.FC<DemographicsDetailsDialogProps> = ({
   }
 
   const getStressLevelColor = (level: number | null) => {
-    if (level === null) return 'bg-gray-100 text-gray-800'
+    if (level === null) return 'bg-muted text-foreground'
     if (level <= 2) return 'bg-green-100 text-green-800'
     if (level <= 4) return 'bg-yellow-100 text-yellow-800'
     if (level <= 6) return 'bg-orange-100 text-orange-800'

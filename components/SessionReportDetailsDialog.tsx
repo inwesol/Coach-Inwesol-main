@@ -122,15 +122,15 @@ const SessionReportDetailsDialog: React.FC<SessionReportDetailsDialogProps> = ({
               </CardHeader>
               <CardContent>
                 {sessionReportData.summary ? (
-                  <div className='rounded-lg border bg-gray-50 p-4'>
-                    <p className='whitespace-pre-wrap leading-relaxed text-gray-900'>
+                  <div className='rounded-lg border bg-muted/40 p-4'>
+                    <p className='whitespace-pre-wrap leading-relaxed text-foreground'>
                       {sessionReportData.summary}
                     </p>
                   </div>
                 ) : (
-                  <div className='rounded-lg border border-dashed border-gray-300 bg-gray-50 p-8 text-center'>
-                    <ClipboardList className='mx-auto mb-2 h-8 w-8 text-gray-400' />
-                    <p className='text-sm text-gray-500'>
+                  <div className='rounded-lg border border-dashed border-border bg-muted/40 p-8 text-center'>
+                    <ClipboardList className='mx-auto mb-2 h-8 w-8 text-muted-foreground' />
+                    <p className='text-sm text-muted-foreground'>
                       No summary available
                     </p>
                   </div>
@@ -148,15 +148,15 @@ const SessionReportDetailsDialog: React.FC<SessionReportDetailsDialogProps> = ({
               </CardHeader>
               <CardContent>
                 {sessionReportData.coach_feedback ? (
-                  <div className='rounded-lg border bg-gray-50 p-4'>
-                    <p className='whitespace-pre-wrap leading-relaxed text-gray-900'>
+                  <div className='rounded-lg border bg-muted/40 p-4'>
+                    <p className='whitespace-pre-wrap leading-relaxed text-foreground'>
                       {sessionReportData.coach_feedback}
                     </p>
                   </div>
                 ) : (
-                  <div className='rounded-lg border border-dashed border-gray-300 bg-gray-50 p-8 text-center'>
-                    <MessageSquare className='mx-auto mb-2 h-8 w-8 text-gray-400' />
-                    <p className='text-sm text-gray-500'>
+                  <div className='rounded-lg border border-dashed border-border bg-muted/40 p-8 text-center'>
+                    <MessageSquare className='mx-auto mb-2 h-8 w-8 text-muted-foreground' />
+                    <p className='text-sm text-muted-foreground'>
                       No coach feedback available
                     </p>
                   </div>

@@ -187,7 +187,7 @@ const RiasecTestDetailsDialog: React.FC<RiasecTestDetailsDialogProps> = ({
           </Badge>
         )
       default:
-        return <Badge className='bg-gray-100 text-gray-800'>{status}</Badge>
+        return <Badge className='bg-muted text-foreground'>{status}</Badge>
     }
   }
 
@@ -200,7 +200,7 @@ const RiasecTestDetailsDialog: React.FC<RiasecTestDetailsDialogProps> = ({
   const getCategoryColor = (code: string) => {
     const normalizedCode = normalizeCategoryCode(code)
     const category = riasecCategories.find(cat => cat.code === normalizedCode)
-    return category ? category.color : 'bg-gray-100 text-gray-800'
+    return category ? category.color : 'bg-muted text-foreground'
   }
 
   const getCategoryDescription = (code: string) => {
@@ -319,18 +319,18 @@ const RiasecTestDetailsDialog: React.FC<RiasecTestDetailsDialogProps> = ({
                           return (
                             <div
                               key={key}
-                              className='rounded-lg border bg-gray-50 p-4'
+                              className='rounded-lg border bg-muted/40 p-4'
                             >
                               <div className='flex items-center justify-between'>
                                 <div className='flex-1'>
-                                  <h4 className='font-medium text-gray-900'>
+                                  <h4 className='font-medium text-foreground'>
                                     {categoryName}
                                   </h4>
                                   <p className='mt-1 text-xs text-muted-foreground'>
                                     {categoryDescription}
                                   </p>
                                 </div>
-                                <div className='mx-4 h-12 w-px bg-gray-300'></div>
+                                <div className='mx-4 h-12 w-px bg-border'></div>
                                 <div className='text-right'>
                                   <div className='text-xl font-semibold text-blue-600'>
                                     {value}
@@ -377,12 +377,12 @@ const RiasecTestDetailsDialog: React.FC<RiasecTestDetailsDialogProps> = ({
                           (answer: string, index: number) => (
                             <div
                               key={index}
-                              className='flex items-center gap-2 rounded-lg border bg-gray-50 p-3'
+                              className='flex items-center gap-2 rounded-lg border bg-muted/40 p-3'
                             >
                               <span className='flex-shrink-0 rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800'>
                                 {index + 1}
                               </span>
-                              <span className='text-sm text-gray-900'>
+                              <span className='text-sm text-foreground'>
                                 {answer}
                               </span>
                             </div>
@@ -425,18 +425,18 @@ const RiasecTestDetailsDialog: React.FC<RiasecTestDetailsDialogProps> = ({
                         )
                         const IconComponent = category?.icon || User
                         const colorClass =
-                          category?.color || 'bg-gray-100 text-gray-800'
+                          category?.color || 'bg-muted text-foreground'
 
                         return (
                           <div
                             key={index}
-                            className='flex items-center gap-3 rounded-lg border bg-gray-50 p-3'
+                            className='flex items-center gap-3 rounded-lg border bg-muted/40 p-3'
                           >
                             <div className={`rounded-full p-2 ${colorClass}`}>
                               <IconComponent className='h-4 w-4' />
                             </div>
                             <div>
-                              <div className='font-medium text-gray-900'>
+                              <div className='font-medium text-foreground'>
                                 {index + 1}. {letter} - {category?.name}
                               </div>
                               <div className='text-xs text-muted-foreground'>

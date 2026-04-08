@@ -155,7 +155,7 @@ const ScheduleCallDetailsDialog: React.FC<ScheduleCallDetailsDialogProps> = ({
 
         {error && (
           <div className='py-4 text-center'>
-            <div className='mb-4 text-red-500'>{error}</div>
+            <div className='mb-4 text-destructive'>{error}</div>
           </div>
         )}
 
@@ -185,7 +185,7 @@ const ScheduleCallDetailsDialog: React.FC<ScheduleCallDetailsDialogProps> = ({
                   value={summary}
                   onChange={e => setSummary(e.target.value)}
                   placeholder='Write the session summary here...'
-                  className='min-h-72 w-full resize-y rounded-lg border-2 border-gray-200 p-2 transition-all focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20'
+                  className='min-h-72 w-full resize-y rounded-lg border-2 border-input bg-background p-2 text-foreground placeholder:text-muted-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'
                 />
               </CardContent>
             </Card>
@@ -203,7 +203,7 @@ const ScheduleCallDetailsDialog: React.FC<ScheduleCallDetailsDialogProps> = ({
                   value={coachFeedback}
                   onChange={e => setCoachFeedback(e.target.value)}
                   placeholder='Write your coach feedback here...'
-                  className='min-h-48 w-full resize-y rounded-lg border-2 border-gray-200 p-2 transition-all focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20'
+                  className='min-h-48 w-full resize-y rounded-lg border-2 border-input bg-background p-2 text-foreground placeholder:text-muted-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'
                 />
               </CardContent>
             </Card>

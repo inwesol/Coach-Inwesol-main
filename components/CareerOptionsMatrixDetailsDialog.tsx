@@ -110,11 +110,11 @@ const CareerOptionsMatrixDetailsDialog: React.FC<
 
   // Get value color based on score (assuming 1-3 scale, can be adjusted)
   const getValueColor = (value: number | null) => {
-    if (value === null) return 'text-gray-400'
+    if (value === null) return 'text-muted-foreground'
     if (value === 3) return 'text-green-600 font-semibold'
     if (value === 2) return 'text-yellow-600 font-semibold'
     if (value === 1) return 'text-orange-600 font-semibold'
-    return 'text-gray-600'
+    return 'text-muted-foreground'
   }
 
   return (
@@ -158,7 +158,7 @@ const CareerOptionsMatrixDetailsDialog: React.FC<
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead className='sticky left-0 z-10 min-w-[200px] bg-white font-semibold'>
+                        <TableHead className='sticky left-0 z-10 min-w-[200px] bg-background font-semibold'>
                           Career Option
                         </TableHead>
                         {matrixData.columns
@@ -176,7 +176,7 @@ const CareerOptionsMatrixDetailsDialog: React.FC<
                     <TableBody>
                       {matrixData.rows.map(row => (
                         <TableRow key={row.id}>
-                          <TableCell className='sticky left-0 z-10 bg-white font-medium'>
+                          <TableCell className='sticky left-0 z-10 bg-background font-medium'>
                             {row.name}
                           </TableCell>
                           {matrixData.columns
@@ -196,7 +196,7 @@ const CareerOptionsMatrixDetailsDialog: React.FC<
                                       <TooltipTrigger asChild>
                                         <div className='flex items-center justify-center gap-2'>
                                           {comment && (
-                                            <MessageSquare className='h-5 w-5 text-gray-400' />
+                                            <MessageSquare className='h-5 w-5 text-muted-foreground' />
                                           )}
                                           <span
                                             className={getValueColor(value)}

@@ -209,7 +209,7 @@ const PsychologicalWellbeingDetailsDialog: React.FC<
           </Badge>
         )
       default:
-        return <Badge className='bg-gray-100 text-gray-800'>{status}</Badge>
+        return <Badge className='bg-muted text-foreground'>{status}</Badge>
     }
   }
 
@@ -300,11 +300,11 @@ const PsychologicalWellbeingDetailsDialog: React.FC<
                       return (
                         <div
                           key={key}
-                          className='rounded-lg border bg-gray-50 p-4'
+                          className='rounded-lg border bg-muted/40 p-4'
                         >
                           <div className='flex items-center justify-between'>
                             <div className='flex-1'>
-                              <h4 className='font-medium text-gray-900'>
+                              <h4 className='font-medium text-foreground'>
                                 {metadata?.name || formatKeyName(key)}
                               </h4>
                               <p className='mt-1 text-xs text-muted-foreground'>
@@ -312,7 +312,7 @@ const PsychologicalWellbeingDetailsDialog: React.FC<
                                   'No description available for this subscale.'}
                               </p>
                             </div>
-                            <div className='mx-4 h-12 w-px bg-gray-300'></div>
+                            <div className='mx-4 h-12 w-px bg-border'></div>
                             <div className='text-right'>
                               <div className='text-xl font-semibold text-blue-600'>
                                 {Math.round(value)}%
@@ -391,14 +391,14 @@ const PsychologicalWellbeingDetailsDialog: React.FC<
                           return (
                             <div
                               key={index}
-                              className='flex items-start justify-between rounded-lg border bg-gray-50 p-3'
+                              className='flex items-start justify-between rounded-lg border bg-muted/40 p-3'
                             >
                               <div className='flex flex-1 items-start gap-3'>
                                 <span className='flex-shrink-0 rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800'>
                                   {getQuestionNumber(index)}
                                 </span>
                                 <div className='flex-1'>
-                                  <h4 className='text-sm font-medium leading-relaxed text-gray-900'>
+                                  <h4 className='text-sm font-medium leading-relaxed text-foreground'>
                                     {question}
                                   </h4>
                                 </div>

@@ -114,7 +114,7 @@ const CareerStoryOneDetailsDialog: React.FC<
           </Badge>
         )
       default:
-        return <Badge className='bg-gray-100 text-gray-800'>{status}</Badge>
+        return <Badge className='bg-muted text-foreground'>{status}</Badge>
     }
   }
 
@@ -169,8 +169,8 @@ const CareerStoryOneDetailsDialog: React.FC<
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className='rounded-lg border bg-gray-50 p-4'>
-                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-gray-900'>
+                  <div className='rounded-lg border bg-muted/40 p-4'>
+                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-foreground'>
                       {careerStoryOneData.transitionEssay}
                     </p>
                   </div>
@@ -197,20 +197,20 @@ const CareerStoryOneDetailsDialog: React.FC<
                         return occupations.map((occupation, index) => (
                           <div
                             key={index}
-                            className='flex items-center gap-2 rounded-lg border bg-gray-50 p-3'
+                            className='flex items-center gap-2 rounded-lg border bg-muted/40 p-3'
                           >
                             <span className='flex-shrink-0 rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800'>
                               {index + 1}
                             </span>
-                            <span className='text-sm text-gray-900'>
+                            <span className='text-sm text-foreground'>
                               {occupation}
                             </span>
                           </div>
                         ))
                       } else {
                         return (
-                          <div className='rounded-lg border bg-gray-50 p-4'>
-                            <p className='whitespace-pre-wrap text-sm leading-relaxed text-gray-900'>
+                          <div className='rounded-lg border bg-muted/40 p-4'>
+                            <p className='whitespace-pre-wrap text-sm leading-relaxed text-foreground'>
                               {careerStoryOneData.occupations}
                             </p>
                           </div>
@@ -237,11 +237,11 @@ const CareerStoryOneDetailsDialog: React.FC<
                       {careerStoryOneData.heroes.map((hero, index) => (
                         <div
                           key={hero.id || index}
-                          className='rounded-lg border bg-gray-50 p-4'
+                          className='rounded-lg border bg-muted/40 p-4'
                         >
                           <div className='space-y-3'>
                             <div>
-                              <h4 className='font-medium text-gray-900'>
+                              <h4 className='font-medium text-foreground'>
                                 {hero.title}
                               </h4>
                               <p className='text-sm text-muted-foreground'>
@@ -249,7 +249,7 @@ const CareerStoryOneDetailsDialog: React.FC<
                               </p>
                             </div>
                             <div>
-                              <p className='text-sm leading-relaxed text-gray-700'>
+                              <p className='text-sm leading-relaxed text-muted-foreground'>
                                 {hero.description}
                               </p>
                             </div>
@@ -271,8 +271,8 @@ const CareerStoryOneDetailsDialog: React.FC<
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className='rounded-lg border bg-gray-50 p-4'>
-                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-gray-900'>
+                  <div className='rounded-lg border bg-muted/40 p-4'>
+                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-foreground'>
                       {careerStoryOneData.mediaPreferences}
                     </p>
                   </div>
@@ -290,8 +290,8 @@ const CareerStoryOneDetailsDialog: React.FC<
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className='rounded-lg border bg-gray-50 p-4'>
-                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-gray-900'>
+                  <div className='rounded-lg border bg-muted/40 p-4'>
+                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-foreground'>
                       {careerStoryOneData.favoriteStory}
                     </p>
                   </div>
@@ -309,8 +309,8 @@ const CareerStoryOneDetailsDialog: React.FC<
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className='rounded-lg border bg-gray-50 p-4'>
-                    <blockquote className='text-sm italic leading-relaxed text-gray-900'>
+                  <div className='rounded-lg border bg-muted/40 p-4'>
+                    <blockquote className='text-sm italic leading-relaxed text-foreground'>
                       "{careerStoryOneData.favoriteSaying}"
                     </blockquote>
                   </div>

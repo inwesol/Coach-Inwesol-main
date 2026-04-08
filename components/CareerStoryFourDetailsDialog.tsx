@@ -68,7 +68,7 @@ export default function CareerStoryFourDetailsDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className='max-h-[90vh] max-w-4xl overflow-y-auto'>
         <DialogHeader>
-          <DialogTitle className='text-2xl font-bold text-gray-900'>
+          <DialogTitle className='text-2xl font-bold text-foreground'>
             Career Story 4 - Rewritten Story
           </DialogTitle>
         </DialogHeader>
@@ -76,7 +76,7 @@ export default function CareerStoryFourDetailsDialog({
         {loading && (
           <div className='flex items-center justify-center py-8'>
             <div className='h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600'></div>
-            <span className='ml-2 text-gray-600'>
+            <span className='ml-2 text-muted-foreground'>
               Loading career story 4 data...
             </span>
           </div>
@@ -113,13 +113,13 @@ export default function CareerStoryFourDetailsDialog({
             {/* Rewritten Story */}
             <Card>
               <CardHeader>
-                <CardTitle className='text-lg font-semibold text-gray-800'>
+                <CardTitle className='text-lg font-semibold text-foreground'>
                   Rewritten Story
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className='rounded-lg bg-gray-50 p-4'>
-                  <p className='whitespace-pre-wrap leading-relaxed text-gray-700'>
+                <div className='rounded-lg bg-muted/40 p-4'>
+                  <p className='whitespace-pre-wrap leading-relaxed text-muted-foreground'>
                     {data.rewrittenStory}
                   </p>
                 </div>

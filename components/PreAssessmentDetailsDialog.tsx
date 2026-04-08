@@ -142,7 +142,7 @@ const PreAssessmentDetailsDialog: React.FC<PreAssessmentDetailsDialogProps> = ({
           </Badge>
         )
       default:
-        return <Badge className='bg-gray-100 text-gray-800'>{status}</Badge>
+        return <Badge className='bg-muted text-foreground'>{status}</Badge>
     }
   }
 
@@ -208,13 +208,13 @@ const PreAssessmentDetailsDialog: React.FC<PreAssessmentDetailsDialogProps> = ({
                           return (
                             <div
                               key={index}
-                              className='flex items-center justify-between rounded-lg border bg-gray-50 p-3'
+                              className='flex items-center justify-between rounded-lg border bg-muted/40 p-3'
                             >
                               <div className='flex flex-1 items-start gap-3'>
                                 <span className='flex-shrink-0 rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800'>
                                   {getQuestionNumber(index)}
                                 </span>
-                                <h4 className='text-sm font-medium leading-relaxed text-gray-900'>
+                                <h4 className='text-sm font-medium leading-relaxed text-foreground'>
                                   {question}
                                 </h4>
                               </div>

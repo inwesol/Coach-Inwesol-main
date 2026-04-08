@@ -117,16 +117,16 @@ const MyLifeCollageDetailsDialog: React.FC<MyLifeCollageDetailsDialogProps> = ({
           </Badge>
         )
       default:
-        return <Badge className='bg-gray-100 text-gray-800'>{status}</Badge>
+        return <Badge className='bg-muted text-foreground'>{status}</Badge>
     }
   }
 
   const renderCollageElements = (elements: CollageElement[], title: string) => {
     if (!elements || elements.length === 0) {
       return (
-        <div className='rounded-lg border border-dashed border-gray-300 bg-gray-50 p-8 text-center'>
-          <Image className='mx-auto mb-2 h-8 w-8 text-gray-400' />
-          <p className='text-sm text-gray-500'>
+        <div className='rounded-lg border border-dashed border-border bg-muted/40 p-8 text-center'>
+          <Image className='mx-auto mb-2 h-8 w-8 text-muted-foreground' />
+          <p className='text-sm text-muted-foreground'>
             No {title.toLowerCase()} elements
           </p>
         </div>
@@ -136,7 +136,7 @@ const MyLifeCollageDetailsDialog: React.FC<MyLifeCollageDetailsDialogProps> = ({
     return (
       <div className='space-y-4'>
         <div className='flex items-center justify-between'>
-          <h4 className='text-sm font-medium text-gray-700'>
+          <h4 className='text-sm font-medium text-muted-foreground'>
             {title} ({elements.length} elements)
           </h4>
         </div>
@@ -145,7 +145,7 @@ const MyLifeCollageDetailsDialog: React.FC<MyLifeCollageDetailsDialogProps> = ({
           {elements.map((element, index) => (
             <div
               key={element.id}
-              className='rounded-lg border bg-white p-4 shadow-sm'
+              className='rounded-lg border bg-background p-4 shadow-sm'
             >
               <div className='space-y-3'>
                 {/* Element Info */}
@@ -156,7 +156,7 @@ const MyLifeCollageDetailsDialog: React.FC<MyLifeCollageDetailsDialogProps> = ({
                 </div>
 
                 {/* Image Preview */}
-                <div className='aspect-square overflow-hidden rounded-lg bg-gray-100'>
+                <div className='aspect-square overflow-hidden rounded-lg bg-muted'>
                   <img
                     src={element.content}
                     alt={`${title} element ${index + 1}`}

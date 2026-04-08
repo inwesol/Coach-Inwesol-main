@@ -115,7 +115,7 @@ const CareerStoryTwoDetailsDialog: React.FC<
           </Badge>
         )
       default:
-        return <Badge className='bg-gray-100 text-gray-800'>{status}</Badge>
+        return <Badge className='bg-muted text-foreground'>{status}</Badge>
     }
   }
 
@@ -146,7 +146,7 @@ const CareerStoryTwoDetailsDialog: React.FC<
       riasecCategories.find(cat => cat.code === code) || {
         code,
         name: 'Unknown',
-        color: 'bg-gray-100 text-gray-800'
+        color: 'bg-muted text-foreground'
       }
     )
   }
@@ -198,20 +198,20 @@ const CareerStoryTwoDetailsDialog: React.FC<
                         return adjectives.map((adjective, index) => (
                           <div
                             key={index}
-                            className='flex items-center gap-2 rounded-lg border bg-gray-50 p-3'
+                            className='flex items-center gap-2 rounded-lg border bg-muted/40 p-3'
                           >
                             <span className='flex-shrink-0 rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800'>
                               {index + 1}
                             </span>
-                            <span className='text-sm text-gray-900'>
+                            <span className='text-sm text-foreground'>
                               {adjective}
                             </span>
                           </div>
                         ))
                       } else {
                         return (
-                          <div className='rounded-lg border bg-gray-50 p-4'>
-                            <p className='whitespace-pre-wrap text-sm leading-relaxed text-gray-900'>
+                          <div className='rounded-lg border bg-muted/40 p-4'>
+                            <p className='whitespace-pre-wrap text-sm leading-relaxed text-foreground'>
                               {careerStoryTwoData.firstAdjectives}
                             </p>
                           </div>
@@ -242,20 +242,20 @@ const CareerStoryTwoDetailsDialog: React.FC<
                         return words.map((word, index) => (
                           <div
                             key={index}
-                            className='flex items-center gap-2 rounded-lg border bg-gray-50 p-3'
+                            className='flex items-center gap-2 rounded-lg border bg-muted/40 p-3'
                           >
                             <span className='flex-shrink-0 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800'>
                               {index + 1}
                             </span>
-                            <span className='text-sm text-gray-900'>
+                            <span className='text-sm text-foreground'>
                               {word}
                             </span>
                           </div>
                         ))
                       } else {
                         return (
-                          <div className='rounded-lg border bg-gray-50 p-4'>
-                            <p className='whitespace-pre-wrap text-sm leading-relaxed text-gray-900'>
+                          <div className='rounded-lg border bg-muted/40 p-4'>
+                            <p className='whitespace-pre-wrap text-sm leading-relaxed text-foreground'>
                               {careerStoryTwoData.repeatedWords}
                             </p>
                           </div>
@@ -286,20 +286,20 @@ const CareerStoryTwoDetailsDialog: React.FC<
                         return traits.map((trait, index) => (
                           <div
                             key={index}
-                            className='flex items-center gap-2 rounded-lg border bg-gray-50 p-3'
+                            className='flex items-center gap-2 rounded-lg border bg-muted/40 p-3'
                           >
                             <span className='flex-shrink-0 rounded-full bg-purple-100 px-2 py-1 text-xs font-medium text-purple-800'>
                               {index + 1}
                             </span>
-                            <span className='text-sm text-gray-900'>
+                            <span className='text-sm text-foreground'>
                               {trait}
                             </span>
                           </div>
                         ))
                       } else {
                         return (
-                          <div className='rounded-lg border bg-gray-50 p-4'>
-                            <p className='whitespace-pre-wrap text-sm leading-relaxed text-gray-900'>
+                          <div className='rounded-lg border bg-muted/40 p-4'>
+                            <p className='whitespace-pre-wrap text-sm leading-relaxed text-foreground'>
                               {careerStoryTwoData.commonTraits}
                             </p>
                           </div>
@@ -330,20 +330,20 @@ const CareerStoryTwoDetailsDialog: React.FC<
                         return words.map((word, index) => (
                           <div
                             key={index}
-                            className='flex items-center gap-2 rounded-lg border bg-gray-50 p-3'
+                            className='flex items-center gap-2 rounded-lg border bg-muted/40 p-3'
                           >
                             <span className='flex-shrink-0 rounded-full bg-orange-100 px-2 py-1 text-xs font-medium text-orange-800'>
                               {index + 1}
                             </span>
-                            <span className='text-sm text-gray-900'>
+                            <span className='text-sm text-foreground'>
                               {word}
                             </span>
                           </div>
                         ))
                       } else {
                         return (
-                          <div className='rounded-lg border bg-gray-50 p-4'>
-                            <p className='whitespace-pre-wrap text-sm leading-relaxed text-gray-900'>
+                          <div className='rounded-lg border bg-muted/40 p-4'>
+                            <p className='whitespace-pre-wrap text-sm leading-relaxed text-foreground'>
                               {careerStoryTwoData.significantWords}
                             </p>
                           </div>
@@ -365,8 +365,8 @@ const CareerStoryTwoDetailsDialog: React.FC<
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className='rounded-lg border bg-gray-50 p-4'>
-                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-gray-900'>
+                  <div className='rounded-lg border bg-muted/40 p-4'>
+                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-foreground'>
                       {careerStoryTwoData.selfStatement}
                     </p>
                   </div>
@@ -384,8 +384,8 @@ const CareerStoryTwoDetailsDialog: React.FC<
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className='rounded-lg border bg-gray-50 p-4'>
-                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-gray-900'>
+                  <div className='rounded-lg border bg-muted/40 p-4'>
+                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-foreground'>
                       {careerStoryTwoData.mediaActivities}
                     </p>
                   </div>
@@ -410,7 +410,7 @@ const CareerStoryTwoDetailsDialog: React.FC<
                         return (
                           <div
                             key={index}
-                            className='flex items-center gap-3 rounded-lg border bg-gray-50 p-3'
+                            className='flex items-center gap-3 rounded-lg border bg-muted/40 p-3'
                           >
                             <div
                               className={`rounded-full px-3 py-1 text-xs font-medium ${categoryInfo.color}`}
@@ -418,7 +418,7 @@ const CareerStoryTwoDetailsDialog: React.FC<
                               {code}
                             </div>
                             <div>
-                              <div className='font-medium text-gray-900'>
+                              <div className='font-medium text-foreground'>
                                 {categoryInfo.name}
                               </div>
                               <div className='text-xs text-muted-foreground'>
@@ -443,8 +443,8 @@ const CareerStoryTwoDetailsDialog: React.FC<
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className='rounded-lg border bg-gray-50 p-4'>
-                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-gray-900'>
+                  <div className='rounded-lg border bg-muted/40 p-4'>
+                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-foreground'>
                       {careerStoryTwoData.settingStatement}
                     </p>
                   </div>

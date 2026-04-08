@@ -120,7 +120,7 @@ const CareerStoryThreeDetailsDialog: React.FC<
           </Badge>
         )
       default:
-        return <Badge className='bg-gray-100 text-gray-800'>{status}</Badge>
+        return <Badge className='bg-muted text-foreground'>{status}</Badge>
     }
   }
 
@@ -162,8 +162,8 @@ const CareerStoryThreeDetailsDialog: React.FC<
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className='rounded-lg border bg-gray-50 p-4'>
-                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-gray-900'>
+                  <div className='rounded-lg border bg-muted/40 p-4'>
+                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-foreground'>
                       {careerStoryThreeData.selfStatement}
                     </p>
                   </div>
@@ -181,8 +181,8 @@ const CareerStoryThreeDetailsDialog: React.FC<
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className='rounded-lg border bg-gray-50 p-4'>
-                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-gray-900'>
+                  <div className='rounded-lg border bg-muted/40 p-4'>
+                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-foreground'>
                       {careerStoryThreeData.settingStatement}
                     </p>
                   </div>
@@ -200,8 +200,8 @@ const CareerStoryThreeDetailsDialog: React.FC<
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className='rounded-lg border bg-gray-50 p-4'>
-                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-gray-900'>
+                  <div className='rounded-lg border bg-muted/40 p-4'>
+                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-foreground'>
                       {careerStoryThreeData.plotDescription}
                     </p>
                   </div>
@@ -219,8 +219,8 @@ const CareerStoryThreeDetailsDialog: React.FC<
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className='rounded-lg border bg-gray-50 p-4'>
-                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-gray-900'>
+                  <div className='rounded-lg border bg-muted/40 p-4'>
+                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-foreground'>
                       {careerStoryThreeData.plotActivities}
                     </p>
                   </div>
@@ -238,8 +238,8 @@ const CareerStoryThreeDetailsDialog: React.FC<
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className='rounded-lg border bg-gray-50 p-4'>
-                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-gray-900'>
+                  <div className='rounded-lg border bg-muted/40 p-4'>
+                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-foreground'>
                       {careerStoryThreeData.ableToBeStatement}
                     </p>
                   </div>
@@ -257,8 +257,8 @@ const CareerStoryThreeDetailsDialog: React.FC<
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className='rounded-lg border bg-gray-50 p-4'>
-                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-gray-900'>
+                  <div className='rounded-lg border bg-muted/40 p-4'>
+                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-foreground'>
                       {careerStoryThreeData.placesWhereStatement}
                     </p>
                   </div>
@@ -276,8 +276,8 @@ const CareerStoryThreeDetailsDialog: React.FC<
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className='rounded-lg border bg-gray-50 p-4'>
-                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-gray-900'>
+                  <div className='rounded-lg border bg-muted/40 p-4'>
+                    <p className='whitespace-pre-wrap text-sm leading-relaxed text-foreground'>
                       {careerStoryThreeData.soThatStatement}
                     </p>
                   </div>
@@ -295,8 +295,8 @@ const CareerStoryThreeDetailsDialog: React.FC<
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className='rounded-lg border bg-gray-50 p-4'>
-                    <blockquote className='text-sm italic leading-relaxed text-gray-900'>
+                  <div className='rounded-lg border bg-muted/40 p-4'>
+                    <blockquote className='text-sm italic leading-relaxed text-foreground'>
                       "{careerStoryThreeData.mottoStatement}"
                     </blockquote>
                   </div>
@@ -320,12 +320,12 @@ const CareerStoryThreeDetailsDialog: React.FC<
                         (occupation, index) => (
                           <div
                             key={index}
-                            className='flex items-center gap-2 rounded-lg border bg-gray-50 p-3'
+                            className='flex items-center gap-2 rounded-lg border bg-muted/40 p-3'
                           >
                             <span className='flex-shrink-0 rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800'>
                               {index + 1}
                             </span>
-                            <span className='text-sm text-gray-900'>
+                            <span className='text-sm text-foreground'>
                               {occupation}
                             </span>
                           </div>
