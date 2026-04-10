@@ -97,7 +97,7 @@ export async function PATCH(
         userId: params.id,
         currentSession: 1,
         completedSessions: [],
-        totalScore: 0,
+        paymentDone: false,
         lastActiveDate: new Date().toISOString().split('T')[0],
         enableByCoach: newEnableByCoach
       })

@@ -1051,12 +1051,6 @@ export async function POST(
           completedSessions.push(sessionId)
         }
 
-        // Calculate the new total score
-        // Each completed session is worth 100 points (only add if it's a new session)
-        const newTotalScore = isNewSession
-          ? (jp.totalScore ?? 0) + 100
-          : (jp.totalScore ?? 0)
-
         // Set current_session to the next one
         const nextSession = Math.max(...completedSessions) + 1
 
@@ -1067,7 +1061,6 @@ export async function POST(
             lastActiveDate: new Date().toISOString(),
             updatedAt: new Date(),
             currentSession: nextSession,
-            totalScore: newTotalScore,
           })
           .where(eq(journeyProgress.userId, userId))
       }
